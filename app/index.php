@@ -6,4 +6,5 @@
  * Time: 20:58
  */
 header("location:mod/user/index.php")
+
 ?>

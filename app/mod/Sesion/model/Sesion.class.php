@@ -8,6 +8,56 @@
  */
 class Sesion
 {
+    private static $instancia = null;
+    private $signIn = false;
+    private $idUser;
+    private $dtIn;
+    private $dtOut;
+    private $idSesion;
+
+    private function __construct($idSesion, $idUser,$signIn,$dtIn, $dtOut)
+    {
+        echo "aqui". $idSesion.$idUser.$signIn.$dtIn. $dtOut;
+        $this->setSignIn($signIn);
+        $this->idUser = $idUser;
+        $this->dtIn = $dtIn;
+        $this->dtOut = $dtOut;
+        $this->idSesion = $idSesion;
+    }
+
+
+    /**
+     * Conexion con la base de datos
+     * @return null|PDO
+     */
+    public static function sesion($idSesion, $idUser,$signIn,$dtIn, $dtOut)
+    {
+
+        if(!isset(self::$instancia)) {
+
+            $c =__CLASS__;
+            self::$instancia = new $c($idSesion, $idUser,$signIn,$dtIn, $dtOut);
+        }
+        return self::$instancia;
+
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function getSignIn()
+    {
+        return self::$signIn;
+    }
+
+    /**
+     * @param mixed $signIn
+     */
+    private function setSignIn($signIn)
+    {
+        $this->signIn = $signIn;
+    }
+
     /**
      * Establecer la sesion usando un objeto
      * @param $sSesion Nombre de la sesion
@@ -15,6 +65,7 @@ class Sesion
      */
     public static function setSesionObj($sSesion, $oObj)
     {
+        self::setSignIn(true);
         $_SESSION[$sSesion] = serialize($oObj);
     }
 
@@ -35,6 +86,7 @@ class Sesion
      */
     public static function setSesion($sSesion, $valor)
     {
+        self::setSignIn(true);
         $_SESSION[$sSesion] = $valor;
     }
 
@@ -66,19 +118,20 @@ class Sesion
     /**
      * Eliminar todas las sesiones
      */
-    public static function delSesionTodas()
+    public static function delSesionAll()
     {
+        self::setSignIn(false);
         unset($_SESSION); //borrar el array de sesiones
         session_destroy(); //destruir toda la información asociada a la sesion
     }
 
     /**
      * Redireccion a la pagina principal cuando no esta logado el usuario
-     * @param $sSesion nombre de la sesion
+     *
      */
-    public static function logOut($sSesion)
+    public static function logOut()
     {
-        if (empty(self::getSesion($sSesion))) {
+        if (empty(self::getSignIn())) {
             header("Location:" . PATH . "index.php");
         }
     }
