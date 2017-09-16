@@ -297,19 +297,17 @@ trait DbCommon
         $props = parent::getPropClass();  //array de la lista de propiedades
         $props = array_merge($props, self::propiedades_log());
 
-        $result = new ArrayObject();
         if ($rs) {
+            $result = new ArrayObject();
+
             $rs = $rs->fetchAll(PDO::FETCH_OBJ);
             foreach ($rs as $row) {
                 $obj = new self();
                 foreach (array_keys($props) as $prop) {
-
                     $obj->__set($prop, $row->$prop);
                 }
-
                 $result[] = $obj;
             }
-
             $rs = $result;
         } else {
             $rs = null;
@@ -342,6 +340,12 @@ trait DbCommon
     public static function getAll($limit_inf = null, $limit_sup = null)
     {
         self::setConexion();
+        //recoger el total de registros
+        $ssql = "select count(*) from " . self::$tabla. " where cActivo = 'Si' and cBorrado = 'No' ";
+        $rs = self::$conn->select($ssql);
+        self::$conn->setRowCount($rs->fetch()[0]);  //almacenar la cuenta total de registros
+
+
         $ssql = "select * from " . self::$tabla;
         $ssql .= " where cActivo = 'Si' and cBorrado = 'No' ";
 

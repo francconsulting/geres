@@ -37,17 +37,20 @@ class user_controller{
 
     public function getUserAllObj($limit_inf=null,$limit_sup=null){
         $rows = User_model::getAllObj($limit_inf,$limit_sup);
-        include(MODULO."/view/modules/".$GLOBALS["clase"]."module.php");
+        //include(MODULO."/view/modules/".$GLOBALS["clase"]."module.php");
+        return $rows;
     }
 
     public function getUserIdObj($id){
         $rows = User_model::getIdObj($id);
-        include(MODULO."/view/modules/".$GLOBALS["clase"]."module.php");
+        //include(MODULO."/view/modules/".$GLOBALS["clase"]."module.php");
+        return $rows;
     }
 
-    public function getUserAll(){
-        $rows = User_model::getAll();
-        include(MODULO."/view/modules/".$GLOBALS["clase"]."module.php");
+    public function getUserAll($limit_inf=null,$limit_sup=null){
+        $rows = User_model::getAll($limit_inf,$limit_sup);
+       // include(MODULO."/view/modules/".$GLOBALS["clase"]."module.php");
+        return $rows;
     }
     public function getuserForm($id){
         if (!empty($id)){     $rows = User_model::getIdObj($id);}

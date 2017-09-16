@@ -11,12 +11,8 @@ ob_start();
 define("PATH",$_SERVER['DOCUMENT_ROOT']);  //TODO raiz del proyecto
 define ("MODULO",str_replace("view", "", dirname(__FILE__)));
 
-$cfg = (object) parse_ini_file(PATH.'/gestrest/app/cfg/config_global.ini');
-require_once (PATH.'/gestrest/app/lib/common.php');
-
-
-
-
+$cfg = (object) parse_ini_file(PATH.'/geres/app/cfg/config_global.ini');
+require_once (PATH.'/geres/app/lib/common.php');
 
 
 /*$carpetas = array('db','lib');
@@ -34,16 +30,8 @@ function cargar_clases($class_name){
 spl_autoload_register('cargar_clases');
 */
 
-
-
-
 echo Helper::getCss(array('common'));
 echo Helper::getJs(array('js/jQuery-3_2_1','js/common','js/func_async','mod/User/js/userjs'));
-
-
-
-
-
 
 
 require_once (PATH.PROJECT.APP."/mod/User/controller/user_controller.php");  //todo crear la raiz
@@ -54,34 +42,6 @@ require_once(PATH.PROJECT.APP."/db/db.openconex.inc.php");
 //echo Util::VariablesServidor();
 
 $us = new user_controller();
-
-
-
-/*
-
-     $doc = file_get_contents("index.php");
-     $dom = new DOMDocument();
-     $dom->loadHTML($doc);
-$html = $dom->getElementsByTagName('html');
-$html = $html->item(0);
-     $head = $dom->getElementsByTagName('head');
-
-     $head = $head->item(0);
-     $link = new DOMElement("link");
-     $html->insertBefore($link);
-     $link->setAttribute('href', 'http://localhost/gestrest/app/css/common.css');
-     $link->setAttribute('rel', 'stylesheet');
-
-     $link = $dom->getElementsByTagName('link');
-     $link = $link->item(0);
-
-     echo $dom->saveHTML();
-*/
-
-
-
-//crear vista y cargar plantilla
-//$view = new view('mi usuario');
 
 
 if(isset($_POST['accion'])){
@@ -97,7 +57,12 @@ if(isset($_POST['accion'])){
 
    // $rs = $us->getUserIdObj(303);
 }//else{
-$rs = $us->getUserAllObj(5,15);
+$rows = $us->getUserAllObj(5,5);
+
+if(!empty($rows)) { //TODO si no hay registro no muestra nada, en el include tambien esta controlado. Decidir si en uno en otro
+    include(MODULO . "/view/modules/" . $GLOBALS["clase"] . "module.php");
+}
+
 //}
 
 

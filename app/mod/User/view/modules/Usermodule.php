@@ -5,7 +5,6 @@
  * Date: 13/08/2017
  * Time: 19:55
  */
-
 $totalRegistros = User_model::getRowCount();
 //if (!empty($rows)){
 if ($totalRegistros>0){
@@ -20,6 +19,7 @@ if ($totalRegistros>0){
         <div class="box-body">
             <table id="example1" class="table table-bordered table-striped" cellpadding="3" cellspacing="2">
                 <tr>
+                    <th>nº</th>
                     <th>id</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
@@ -29,8 +29,10 @@ if ($totalRegistros>0){
 
                 <?php
                 if (count($rows) > 1) {
+                    $i=1;
                     foreach ($rows as $row) { ?>
                         <tr>
+                            <td><?php echo $i;?></td>
                             <td>+<?php echo $row->getIdUser(); ?></td>
                             <td><?php echo $row->getSNombre(); ?></td>
                             <td><?php echo $row->getApellidos(); ?></td>
@@ -40,7 +42,8 @@ if ($totalRegistros>0){
                             </td>
                         </tr>
 
-                    <?php }
+                    <?php
+                        $i++;}
                 } else { ?>
                     <tr>
                         <td>-<?php echo $rows->getIdUser(); ?></td>
