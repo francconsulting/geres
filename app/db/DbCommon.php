@@ -172,8 +172,12 @@ trait DbCommon
     public function guardar()
     {
         // $this->propiedades_log();
-        $parametros = parent::getPropObj();  //array con los pares clave-valor de las propiedades
-        //$parametros = array_merge($parametros, self::propiedades_log());
+        if(get_parent_class($this)) {
+            $parametros = parent::getPropObj();  //array con los pares clave-valor de las propiedades
+        }else{
+            $parametros = $this->getPropObj();  //array con los pares clave-valor de las propiedades
+        }
+            //$parametros = array_merge($parametros, self::propiedades_log());
 
         var_dump($parametros);
         if (!$this->{ID}) {
@@ -368,6 +372,22 @@ trait DbCommon
         return $rs;
     }
 
+    /**
+     * ARRAY
+     * @param $idUser
+     * @return null
+     */
+    public static function getRow($ssql,$param=null,$asoc=null)
+    {
+        self::setConexion();
+        $rs = self::$conn->select($ssql,$param,$asoc);
+        if ($rs) {
+            $rs = $rs->fetch();
+        } else {
+            $rs = null;
+        }
+        return $rs;
+    }
 
 }
 

@@ -8,21 +8,60 @@
  */
 class Sesion
 {
+    use DbCommon;
+
+    private static $conn;
+    private static $tabla;
+    private static $id;
+
+
     private static $instancia = null;
-    private $signIn = false;
+
+    private  $signIn = null;
     private $idUser;
     private $dtIn;
     private $dtOut;
     private $idSesion;
 
+
     private function __construct($idSesion, $idUser,$signIn,$dtIn, $dtOut)
     {
-        echo "aqui". $idSesion.$idUser.$signIn.$dtIn. $dtOut;
         $this->setSignIn($signIn);
         $this->idUser = $idUser;
         $this->dtIn = $dtIn;
         $this->dtOut = $dtOut;
         $this->idSesion = $idSesion;
+        $this->setConexion();
+    }
+
+    /**
+     * Método mágico para establecer a la propiedad un valor
+     * @param $clave    propiedad del objeto
+     * @param $valor    valor del objeto
+     * @return mixed
+     */
+    public function __set($clave, $valor){ return $this->$clave=$valor; }
+
+    /**
+     * Método mágico para obtener las propiedade sde los objetos
+     * @param $clave    propiedad del objeto
+     * @return mixed
+     */
+    public function __get($clave){ return $this->$clave; }
+    /**
+     * Obtener un array con las propiedades de la clase
+     * @return array
+     */
+    public function getPropClass(){
+        return get_class_vars(__CLASS__);
+    }
+
+    /**
+     * Obtener array con pares de clave-valor de las propiedades del objeto
+     * @return array
+     */
+    public function getPropObj(){
+        return get_object_vars($this);
     }
 
 
@@ -32,22 +71,26 @@ class Sesion
      */
     public static function sesion($idSesion, $idUser,$signIn,$dtIn, $dtOut)
     {
-
         if(!isset(self::$instancia)) {
-
             $c =__CLASS__;
             self::$instancia = new $c($idSesion, $idUser,$signIn,$dtIn, $dtOut);
         }
         return self::$instancia;
+    }
 
+
+    private function setConexion(){
+        self::$conn =  $GLOBALS{CONN};
+        self::$tabla = TABLA;
+        self::$id = ID;
     }
 
     /**
-     * @return mixed
+     * @return null
      */
-    public static function getSignIn()
+    public function getSignIn()
     {
-        return self::$signIn;
+        return $this->signIn;
     }
 
     /**

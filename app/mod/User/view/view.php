@@ -57,7 +57,8 @@ if(isset($_POST['accion'])){
 
    // $rs = $us->getUserIdObj(303);
 }//else{
-$rows = $us->getUserAllObj(5,5);
+
+$rows = $us->getUserAllObj(5,25);
 
 if(!empty($rows)) {             //TODO si no hay registro no muestra nada, en el include tambien esta controlado. Decidir si en uno en otro
     include(MODULO . "/view/modules/" . $GLOBALS["clase"] . "module.php");

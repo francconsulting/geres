@@ -14,3 +14,13 @@ function cambiarTitulo(titulo){
     $("title")[0].innerHTML=titulo;
 }
 
+/**
+ * envio de formulario con js
+ * @param formulario
+ * @param url
+ */
+function enviarForm(formulario, url){
+    $("#"+formulario).attr("action",url);
+    //$("#"+form).submit();  //TODO ->no funciona ??
+    document[formulario].submit();
+}

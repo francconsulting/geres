@@ -31,20 +31,28 @@ spl_autoload_register('cargar_clases');
 */
 
 echo Helper::getCss(array('common'));
-echo Helper::getJs(array('js/jQuery-3_2_1','js/common','js/func_async','mod/User/js/userjs'));
+echo Helper::getJs(array('js/jQuery-3_2_1','js/common','js/func_async'));
 
 
 require_once (PATH.PROJECT.APP."/mod/Sesion/controller/Sesion_controller.php");
 require_once(PATH.PROJECT.APP."/mod/Sesion/model/Sesion.class.php");
-require_once(PATH.PROJECT.APP."/mod/Sesion/model/Sesion_model.class.php");
+
 
 
 require_once(PATH.PROJECT.APP."/db/db.openconex.inc.php");
 //echo Util::VariablesServidor();
-
-$sesion = new Sesion_model("pruebaIdSesion", "idUSUARIO", "LOGADO:SI", "horaInicio", "HoraFin");
-
+//if (!isset($sesion)) {
+$sesion = new sesion_controller();
 var_dump($sesion);
+var_dump($sesion->getSignIn());
+$sesion->guardarSesion();
+
+    echo "   hola:".$sesion->getSignIn();
+
+//}
+var_dump($sesion);
+echo "Sesion:". $sesion->getSignIn();
+
 
     /*
 if(isset($_POST['accion'])){

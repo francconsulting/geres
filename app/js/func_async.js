@@ -18,6 +18,7 @@ function callAjax(url,doneFuncion,parametros,tipo,tipoDato) {
     $.ajax({
         url: url,
         type: tipo,
+        cache: false,
         dataType: tipoDato,
         data: parametros,       //parametros que se le pasan al hacer la peticion
         async: true, //[bool que indica sincronía/asincronia]
@@ -34,10 +35,9 @@ function callAjax(url,doneFuncion,parametros,tipo,tipoDato) {
             $("#procesando").fadeOut(1000, function(){
                 $("#mensaje").addClass("ok").text("proceso realizado con exito").clearQueue().fadeIn("fast").fadeOut(3000); //mostrar mensaje de ok
             });
-
         })
         .fail(function(jqXHR){  //en caso de que la peticion sea erronea
-            $("#mensaje").addClass("error").text("Se ha producido un error:" + jqXHR.status+" -> "+smgErr); //si hay algun error en la llamada muestra un mensaje
+            $("#mensaje").addClass("error").text("Se ha producido un error:" + jqXHR.status+ " "+jqXHR.statusText); //si hay algun error en la llamada muestra un mensaje
         })
 
        /* .always(function(jqXHR){  //completada la peticion
@@ -45,6 +45,5 @@ function callAjax(url,doneFuncion,parametros,tipo,tipoDato) {
         })*/
     ;
 }
-
 
 

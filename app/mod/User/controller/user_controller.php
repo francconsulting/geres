@@ -77,6 +77,10 @@ class user_controller{
        //  $this->getUserAllObj();
     }
 
+    public function registrarUser(){
+        $usu = new User_model($_POST['txtNombre'],$_POST['txtApellidos'],crypt($_POST['pass'],  Util::getSalt()),$_POST['txtRol']);
+        $usu->guardar();
+    }
 
 }
 
