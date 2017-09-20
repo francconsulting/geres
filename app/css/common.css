@@ -33,7 +33,9 @@ th, td{
     font-size: 1.5em;
     text-align: center;
 }
-
+#contentUser{
+    display: none;
+}
 
 #cerrar-modal {
     display: none;

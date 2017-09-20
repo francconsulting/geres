@@ -17,5 +17,6 @@
 
 
        <input type='submit' value='Entrar' id='btnEnviar' name='btnEnviar'>
+      <input type='submit' value='Registrar' id='btnRegistrar' name='btnRegistrar'>
      <div id='invitado'><a href='informacion.php'>Acceso invitado</a></div>"
 </fieldset>

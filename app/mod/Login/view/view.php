@@ -37,6 +37,8 @@ if(isset($_POST['accion'])){
 
           // echo $result->sNombre;
 
+    }else if($accion=='registrar') {
+        echo json_encode(array(True,"Redirigiendo al registro"));
     }
 
 }else {

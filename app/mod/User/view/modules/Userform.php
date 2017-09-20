@@ -12,11 +12,11 @@
 
 //}
 //var_dump($rows);
-if (isset($rows)) {
+/*if (isset($rows)) {
     echo $rows->idUser;
-}
+}*/
 ?>
-<div id="containerUser"class="modal">
+<div id="containerUser" >
     <div id="contentUser">
         <input id="cerrar-modal" name="modal" type="radio" />    <label for="cerrar-modal"> X </label>
         Nombre:<input type="text" id="txtNombre" name="txtNombre" value="<?php if(isset($rows)){echo $rows->sNombre;} ?>" >

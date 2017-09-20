@@ -56,15 +56,19 @@ if(isset($_POST['accion'])){
     }
 
    // $rs = $us->getUserIdObj(303);
-}//else{
-
-$rows = $us->getUserAllObj(5,25);
-
-if(!empty($rows)) {             //TODO si no hay registro no muestra nada, en el include tambien esta controlado. Decidir si en uno en otro
-    include(MODULO . "/view/modules/" . $GLOBALS["clase"] . "module.php");
 }
+if(isset($_POST['haccion']) && $_POST['haccion']=="registrar" ){
+    include(MODULO . "/view/modules/" . $GLOBALS["clase"] . "form.php");
+    echo $_POST['haccion'];
+}else {
 
-//}
+    $rows = $us->getUserAllObj(5, 5);
+
+    if (!empty($rows)) {             //TODO si no hay registro no muestra nada, en el include tambien esta controlado. Decidir si en uno en otro
+        include(MODULO . "/view/modules/" . $GLOBALS["clase"] . "module.php");
+    }
+
+}
 
 
 

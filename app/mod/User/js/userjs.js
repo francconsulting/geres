@@ -19,6 +19,15 @@ $(document).ready(function () {
 $("[data-accion]").on("click", function(){
     $("#haccion").val(($(this).data("accion")));
 });
+
+
+    if($("#haccion").val()=="registrar"){
+        $("#containerUser").removeClass('modal');
+    }else{
+
+        $("#containerUser").addClass('modal');
+        $("#contentUser").show();
+    }
 });
 
 
@@ -54,7 +63,7 @@ function showTb(result){
     //alert(result);
     $("#contenido").html("");
     $("#contenido").html(result);
-    $("#haccion").val("");
+   // $("#haccion").val("");
 }
 
 function limpiarForm(){
