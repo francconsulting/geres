@@ -11,9 +11,9 @@
 <fieldset>
     <div id="cabeceraAcceso"><h1>Acceso</h1></div>
     <label id="lbUsuario" for="usuario"></label>
-    <input type="text" id="usuario" name="usuario" required="true" value="actualizar ora<?php //echo $nombre ?>">
+    <input type="text" id="usuario" name="usuario" required="true" value="nuevo1<?php //echo $nombre ?>">
     <label id="lbPass" for="pass"></label>
-    <input type="password" id="pass" name="pass" required="true" value="aa<?php //echo $pass ?>">
+    <input type="password" id="pass" name="pass" required="true" value="ss<?php //echo $pass ?>">
 
 
        <input type='submit' value='Entrar' id='btnEnviar' name='btnEnviar'>

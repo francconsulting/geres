@@ -6,6 +6,7 @@ $(document).ready(function () {
         evt.preventDefault();
         console.log(evt);
         alert((evt.target.tagName));
+        $("#btnEnviar").attr("disabled", "disabled");
     });
     $("#btnEnviar").on("click", function(){
         acceder('acceder')
@@ -22,6 +23,7 @@ function acceder(accion) {
     // console.log(this);
     param = {
         'usuario': $('#usuario').val(),
+        'pass' : $('#pass').val(),
         'accion': accion
     }
 
@@ -39,18 +41,30 @@ function acceder(accion) {
 function mostrar(result){
 
     //console.log(result);
-if(result[0]) {
+if(result['logado']) {
     $("#contenido").html(result.sNombre);
     $("#hmod").val('user');
 
    /* $("#frmCuerpo").attr("action","index.php");
     document.frmCuerpo.submit();*/
    // $("#frmCuerpo").submit();
-    enviarForm("frmCuerpo","index.php");
+
+ //   enviarForm("frmCuerpo","index.php");
 }else{
-    $("#haccion").val("");
+    $("#procesando").fadeOut(1000, function() {
+        $("#mensaje").addClass("ok")
+                    .text(result['msg'])
+                    .clearQueue()
+                    .fadeIn("fast")
+                    .fadeOut(3000, function(){
+                        $("#btnEnviar").removeAttr("disabled");
+                    }); //mostrar mensaje de ok
+
+    });
+        $("#haccion").val("");
     $("#hmod").val("");
 }
+
 
 
 }

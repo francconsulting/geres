@@ -17,22 +17,37 @@ require_once (PATH.'/geres/app/lib/common.php');
 //echo Util::VariablesServidor();
 if(isset($_POST['accion'])){
     require_once(PATH . PROJECT . APP . "/mod/Login/controller/login_controller.php");  //todo crear la raiz
-    /*require_once(PATH.PROJECT.APP."/mod/Login/model/Login.class.php");
-    require_once(PATH.PROJECT.APP."/mod/Login/model/Login_model.class.php");
+    require_once(PATH.PROJECT.APP."/mod/Login/model/Login.class.php");
+    /*require_once(PATH.PROJECT.APP."/mod/Login/model/Login_model.class.php");
     */
     require_once(PATH . PROJECT . APP . "/db/db.openconex.inc.php");
     $accion = $_POST['accion'];
 
     if ($accion=='acceder'){
            $login = new login_controller();
-           $result =  $login->getLogin();
+            $result = $login->getLogin();
+            $msg ='usuario o password incorrectos';
+
             if(!empty($result)){
-                array_unshift($result, true);
+               // echo implode($result);
+              //  array_unshift($result, true);
+
+
+                $validar = $login->verifPass($_POST['pass'], $result['sPassword']);
+                if ($validar){
+                    array_unshift($result, $result['logado']=true, $result['msg']=null);
+
+                }else{
+                    unset($result);
+                    array_push($result, $result['logado']=false,$result['msg']=$msg);
+
+                }
                 echo json_encode($result);
 
-               // password_verify($password, $hash);
             }else{
-                echo json_encode(array(false,"El usuario o password incorrectos"));
+                //echo json_encode(array($result['logado']=false,"El usuario o password incorrectos"));
+                array_push($result, $result['logado']=false,$result['msg']=$msg);
+                echo json_encode($result);
             }
 
           // echo $result->sNombre;

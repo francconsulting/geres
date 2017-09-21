@@ -16,7 +16,7 @@ class login_controller
     private static $tabla;
     private static $id;
 
-    public function getLogin(){
+   /* public function getLogin(){
         $filtro = ['nombre' => $_POST['usuario']];
         self::setConexion();
         $ssql = "select * from " . self::$tabla . " where sNombre = :nombre";
@@ -29,10 +29,16 @@ class login_controller
         }
              //return json_encode($rs);
              return ($rs);
+    }*/
+
+    public function getLogin(){
+        $login = new Login();
+        $dataLogin = $login->getLogIn();
+
+        return $dataLogin;
     }
-
-    public function verifPass(){
-
+    public function verifPass($input_pass, $rs_pass){
+       return password_verify($input_pass, $rs_pass);
     }
 
     private function setConexion(){

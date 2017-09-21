@@ -32,9 +32,9 @@ function callAjax(url,doneFuncion,parametros,tipo,tipoDato) {
     })
         .done(function(result){  //cuando se ejecuta la peticion de forma correcta
             doneFuncion(result) //hacemos la llamada a la funcion calback pasada por parametros para utilizar los datos recuperados
-            $("#procesando").fadeOut(1000, function(){
+        /*    $("#procesando").fadeOut(1000, function(){
                 $("#mensaje").addClass("ok").text("proceso realizado con exito").clearQueue().fadeIn("fast").fadeOut(3000); //mostrar mensaje de ok
-            });
+            });*/
         })
         .fail(function(jqXHR){  //en caso de que la peticion sea erronea
             $("#mensaje").addClass("error").text("Se ha producido un error:" + jqXHR.status+ " "+jqXHR.statusText); //si hay algun error en la llamada muestra un mensaje
