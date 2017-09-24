@@ -1,2 +1,0 @@
-# geres
-Gestión de residencias
