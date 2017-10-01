@@ -5,7 +5,7 @@ $(document).ready(function () {
     $("#frmCuerpo").on("submit",function(evt){
         evt.preventDefault();
         console.log(evt);
-        alert((evt.target.tagName));
+       // alert((evt.target.tagName));
         $("#btnEnviar").attr("disabled", "disabled");
     });
     $("#btnEnviar").on("click", function(){
@@ -49,7 +49,7 @@ if(result['logado']) {
     document.frmCuerpo.submit();*/
    // $("#frmCuerpo").submit();
 
- //   enviarForm("frmCuerpo","index.php");
+ //   enviarForm("frmCuerpo","index.php"); //TODO -> descomentar
 }else{
     $("#procesando").fadeOut(1000, function() {
         $("#mensaje").addClass("ok")

@@ -46,6 +46,15 @@ class Db
         return $this->conn;
     }
 
+    public function getPropClass(){
+        return get_class_vars(__CLASS__);
+    }
+
+    public function getPropObj(){
+        return get_object_vars($this);
+    }
+
+
     /**
      * @return null
      */
@@ -204,10 +213,9 @@ class Db
      */
     public function insert($tabla, $parametros, $asoc = true, $debug = null)
     {
-        var_dump($parametros);
+  //      var_dump($parametros);
         list($campos, $param) = call_user_func_array('self::prepararParam', array($parametros, $asoc));
         $ssql = "insert into {$tabla} (" . implode(',', $campos) . ") values ({$param})";
-
        $arg = func_num_args();  // numero de argumentos pasados
        if ($arg>3 && func_get_arg($arg-1) == 'test'){echo $ssql."<br />";}  //si el ultimo parametros es la cadena 'test' muestra la instruccion sql
 
@@ -296,7 +304,7 @@ class Db
      * @param $conn Link de conexion
      * @param $tabla String con el nombre de la tabla donde insertar los valores
      * @param $parametros array con los campos y valores a actualizar
-     * @param null $filtro array con la condiciones del filtro
+     * @param null $filtro array con la condiciones del filtro (cuando el valor es ISNULL o NOT ISNULL la instruccion se reestructura
      * @param bool $asoc Si se usan parametros con sustitucion de nombre o con signos de ?
      * @return null
      */
@@ -318,7 +326,9 @@ class Db
         }
         $ssql = substr($ssql, 0, -1);
         if ($filtro) {
+            var_dump($filtro);
             list($filtroCamp, $filtroParam) = call_user_func_array('self::prepararParam', array($filtro, $asoc));
+
             if (!$asoc) {
                 $filtroParam = explode(",", $filtroParam);
             }
@@ -329,16 +339,21 @@ class Db
                 if (!$asoc) {
                     $ssql .= "{$filtroCamp[$i]} = {$filtroParam[$i]} and ";
                 } else {
-                    $ssql .= "{$filtroCamp[$i]} =  :$filtroCamp[$i]Filtro and ";
+                    if (stripos(strtoupper($filtro[$filtroCamp[$i]]), 'NULL')){
+                        $ssql .= $filtro[$filtroCamp[$i]]."({$filtroCamp[$i]}) and ";
+                    }else {
+                        $ssql .= "{$filtroCamp[$i]} =  :$filtroCamp[$i]Filtro and ";
+                   }
                 }
 
             }
             $ssql = substr($ssql, 0, -4);
         }
-       // echo $ssql;
+        echo $ssql;
 
         $iCon = 1;
         try {
+            var_dump($this->conn);
             $rst = $this->conn->prepare($ssql);
             foreach ($parametros as $k => $v) {
                 if ($asoc) {
@@ -349,11 +364,14 @@ class Db
                 }
             }
             foreach ($filtro as $k => $v) {
-                if ($asoc) {
-                    $rst->bindParam(":{$k}Filtro", $filtro[$k]); //para usar el parametro KEY ($k)
-                } else {
-                    $rst->bindParam($iCon, $filtro[$k]);
-                    $iCon++;
+                if (stripos(strtoupper($v), "NULL") == 0 ) {
+
+                    if ($asoc) {
+                        $rst->bindParam(":{$k}Filtro", $filtro[$k]); //para usar el parametro KEY ($k)
+                    } else {
+                        $rst->bindParam($iCon, $filtro[$k]);
+                        $iCon++;
+                    }
                 }
             }
 
@@ -383,23 +401,19 @@ class Db
         foreach ($array as $key => $valor) {
             $campos[] = $key;
             //      $datos[]=$valor;
-            if ($tipo) {
-                $parametros .= ":{$key},";
-            } else {
-                $parametros .= "?,";
-            }
+
+                if ($tipo) {
+                    $parametros .= ":{$key},";
+                } else {
+                    $parametros .= "?,";
+                }
+
         }
         $parametros = substr($parametros, 0, -1);
+
         return array($campos, $parametros);
     }
 
-    public function getPropClass(){
-        return get_class_vars(__CLASS__);
-    }
-
-    public function getPropObj(){
-        return get_object_vars($this);
-    }
 
 
 

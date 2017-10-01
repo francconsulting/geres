@@ -8,31 +8,110 @@
  */
 class Sesion
 {
-    use DbCommon;
 
-    private static $conn;
-    private static $tabla;
-    private static $id;
+
+    /*use DbCommon;*/
+
+   /* private static $conn;
+    private static $tabla = "sesiones";
+    private static $id = "idSesion";*/
 
 
     private static $instancia = null;
 
-    private  $signIn = null;
+    private $signIn = false;
     private $idUser;
     private $dtIn;
     private $dtOut;
     private $idSesion;
 
 
-    private function __construct($idSesion, $idUser,$signIn,$dtIn, $dtOut)
+    private function __construct($idUser,  $dtIn, $signIn = null, $dtOut = null, $idSesion = null)
     {
-        $this->setSignIn($signIn);
-        $this->idUser = $idUser;
-        $this->dtIn = $dtIn;
-        $this->dtOut = $dtOut;
-        $this->idSesion = $idSesion;
-        $this->setConexion();
+
+         $this->idSesion = $idSesion;
+         $this->idUser = $idUser;
+         $this->signIn = $signIn;
+         $this->dtIn = $dtIn;
+         $this->dtOut = $dtOut;
+
+       // $this->setConexion();
     }
+
+    /**
+     * @return mixed
+     */
+    public function getIdUser()
+    {
+        return $this->idUser;
+    }
+
+    /**
+     * @param mixed $idUser
+     */
+    public function setIdUser($idUser)
+    {
+        $this->idUser = $idUser;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDtIn()
+    {
+        return $this->dtIn;
+    }
+
+    /**
+     * @param mixed $dtIn
+     */
+    public function setDtIn($dtIn)
+    {
+        $this->dtIn = $dtIn;
+    }
+
+    /**
+     * @return null
+     */
+    public function getDtOut()
+    {
+        return $this->dtOut;
+    }
+
+    /**
+     * @param null $dtOut
+     */
+    public function setDtOut($dtOut)
+    {
+        $this->dtOut = $dtOut;
+    }
+
+
+
+
+    /**
+     * Conexion con la base de datos
+     * @return null|PDO
+     */
+    public static function sesion( $idUser, $signIn, $dtIn, $dtOut = null)
+    {
+        if (!isset(self::$instancia)) {
+            $c = __CLASS__;
+            self::$instancia = new $c( $idUser, $signIn, $dtIn, $dtOut = null);
+        }
+        return self::$instancia;
+    }
+
+
+   /* private function setConexion()
+    {
+        self::$conn = $GLOBALS{CONN};
+        // self::$tabla = TABLA;
+        // self::$id = ID;
+        // self::$tabla = self::TABLA;
+        // self::$id = self::ID;
+
+    }*/
 
     /**
      * Método mágico para establecer a la propiedad un valor
@@ -40,19 +119,27 @@ class Sesion
      * @param $valor    valor del objeto
      * @return mixed
      */
-    public function __set($clave, $valor){ return $this->$clave=$valor; }
+    public function __set($clave, $valor)
+    {
+        return $this->$clave = $valor;
+    }
 
     /**
      * Método mágico para obtener las propiedade sde los objetos
      * @param $clave    propiedad del objeto
      * @return mixed
      */
-    public function __get($clave){ return $this->$clave; }
+    public function __get($clave)
+    {
+        return $this->$clave;
+    }
+
     /**
      * Obtener un array con las propiedades de la clase
      * @return array
      */
-    public function getPropClass(){
+    public function getPropClass()
+    {
         return get_class_vars(__CLASS__);
     }
 
@@ -60,30 +147,27 @@ class Sesion
      * Obtener array con pares de clave-valor de las propiedades del objeto
      * @return array
      */
-    public function getPropObj(){
+    public function getPropObj()
+    {
         return get_object_vars($this);
     }
 
+    /**
+     * @return string
+     */
+    public static function getTabla()
+    {
+        return self::$tabla;
+    }
 
     /**
-     * Conexion con la base de datos
-     * @return null|PDO
+     * @return string
      */
-    public static function sesion($idSesion, $idUser,$signIn,$dtIn, $dtOut)
+    public static function getId()
     {
-        if(!isset(self::$instancia)) {
-            $c =__CLASS__;
-            self::$instancia = new $c($idSesion, $idUser,$signIn,$dtIn, $dtOut);
-        }
-        return self::$instancia;
+        return self::$id;
     }
 
-
-    private function setConexion(){
-        self::$conn =  $GLOBALS{CONN};
-        self::$tabla = TABLA;
-        self::$id = ID;
-    }
 
     /**
      * @return null
@@ -96,7 +180,7 @@ class Sesion
     /**
      * @param mixed $signIn
      */
-    private function setSignIn($signIn)
+    public function setSignIn($signIn)
     {
         $this->signIn = $signIn;
     }
@@ -108,9 +192,9 @@ class Sesion
      */
     public static function setSesionObj($sSesion, $oObj)
     {
-        self::setSignIn(true);
         $_SESSION[$sSesion] = serialize($oObj);
     }
+
 
     /**
      * Deserializar un objeto de una sesion
@@ -129,7 +213,7 @@ class Sesion
      */
     public static function setSesion($sSesion, $valor)
     {
-        self::setSignIn(true);
+       // self::setSignIn(true);
         $_SESSION[$sSesion] = $valor;
     }
 

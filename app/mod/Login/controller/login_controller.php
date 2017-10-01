@@ -12,40 +12,36 @@ define("ID", "idUser");
 
 class login_controller
 {
-    private static $conn;
-    private static $tabla;
-    private static $id;
 
-   /* public function getLogin(){
-        $filtro = ['nombre' => $_POST['usuario']];
-        self::setConexion();
-        $ssql = "select * from " . self::$tabla . " where sNombre = :nombre";
-        $rs = self::$conn->select($ssql,$filtro);
-        if ($rs) {
-            $rs = $rs->fetch(PDO::FETCH_ASSOC);
-        }
-        else {
-            $rs =  null;
-        }
-             //return json_encode($rs);
-             return ($rs);
-    }*/
+   private $login;
 
-    public function getLogin(){
-        $login = new Login();
-        $dataLogin = $login->getLogIn();
+   public function __construct()
+   {
+       //$this->login = Login::login();
+       $this->login = new Login_model();
+
+   }
+
+    public function getLogeadoStatus(){
+        $logeado =  $this->login->getLogeado();
+        return $logeado;
+    }
+
+    public function getLogeadoDataUser(){
+      //  var_dump($this->login->getLogIn());
+
+        $dataLogin = $this->login->getDataUser();
 
         return $dataLogin;
     }
-    public function verifPass($input_pass, $rs_pass){
-       return password_verify($input_pass, $rs_pass);
+
+    public function getLogeadoPass($input_pass, $rs_pass){
+        return $this->login->verifPass($input_pass, $rs_pass);
     }
 
-    private function setConexion(){
-        self::$conn =  $GLOBALS{CONN};
-        self::$tabla = TABLA;
-        self::$id = ID;
-    }
+
+
+
 }
 
 

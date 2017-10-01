@@ -60,8 +60,10 @@ class user_controller{
 
 
     public function guardarUser(){
-        $usu = new User_model($_POST['txtNombre'],$_POST['txtApellidos'],$_POST['txtRol']);
+       // $usu = new User_model($_POST['txtNombre'],$_POST['txtApellidos'],$_POST['txtRol']);
+        $usu = new User_model("fran","paco","ad, ge");
         $usu->guardar();
+        $usu->setIdUser($usu->getlastInsertId());  //guardar el ultimo id insertado
         $this->getUserAllObj();
     }
 

@@ -62,6 +62,7 @@ if(isset($_POST['haccion']) && $_POST['haccion']=="registrar" ){
     echo $_POST['haccion'];
 }else {
 
+$us->guardarUser();
     $rows = $us->getUserAllObj(5, 5);
 
     if (!empty($rows)) {             //TODO si no hay registro no muestra nada, en el include tambien esta controlado. Decidir si en uno en otro

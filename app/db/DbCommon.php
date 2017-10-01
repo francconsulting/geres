@@ -169,7 +169,7 @@ trait DbCommon
         return $propslog;
     }
 
-    public function guardar()
+    public function guardar($incluirCamposLog = true)
     {
         // $this->propiedades_log();
         if(get_parent_class($this)) {
@@ -178,22 +178,38 @@ trait DbCommon
             $parametros = $this->getPropObj();  //array con los pares clave-valor de las propiedades
         }
             //$parametros = array_merge($parametros, self::propiedades_log());
-
-        var_dump($parametros);
-        if (!$this->{ID}) {
-            $parametros = $this->propiedades_log_action($parametros, "insert");
-            var_dump($parametros);
-            echo "insertttttttttt";
+        //if (!$this->{ID}) {
+        if (!$this->{self::$id}) {
+            if ($incluirCamposLog) {
+                $parametros = $this->propiedades_log_action($parametros, "insert");
+            }
+      //      echo "insertttttttttt";  //TODO QUITAR ECHO
             $rs = self::$conn->insert(self::$tabla, $parametros, "test");
-            $this->setIdUser(self::$conn->lastInsertId());
+      //      $this->setIdUser(self::$conn->lastInsertId());     //TODO Pasar esta linea a la clase  usuario
         } else {
             var_dump($parametros);
-            echo "updatessssssss";
-            $parametros = $this->propiedades_log_action($parametros, "update");
-
+            echo "updatessssssss";    //TODO QUITAR ECHO
+            if ($incluirCamposLog) {
+                $parametros = $this->propiedades_log_action($parametros, "update");
+            }
+echo self::$id." ".$this->{self::$id};
             $rs = self::$conn->update(self::$tabla, $parametros, array(ID => $this->{ID}));
         }
         return $rs;
+    }
+
+    /**
+     * Obtener el id del ultimo registro insertado
+     * @return mixed
+     */
+    public function getlastInsertId(){
+        return self::$conn->lastInsertId();
+    }
+
+
+    public static function getRowCount(){
+        $rowCount = self::$conn->getRowCount();
+        return $rowCount;
     }
 
     /**
@@ -261,10 +277,7 @@ trait DbCommon
         return $rs;
     }
 
-    public static function getRowCount(){
-        $rowCount = self::$conn->getRowCount();
-        return $rowCount;
-    }
+
 
     /**
      * Consulta que devuelve los registros como un array de objeto
