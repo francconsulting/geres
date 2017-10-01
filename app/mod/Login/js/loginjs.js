@@ -49,7 +49,7 @@ if(result['logado']) {
     document.frmCuerpo.submit();*/
    // $("#frmCuerpo").submit();
 
- //   enviarForm("frmCuerpo","index.php"); //TODO -> descomentar
+    enviarForm("frmCuerpo","index.php"); //TODO -> descomentar
 }else{
     $("#procesando").fadeOut(1000, function() {
         $("#mensaje").addClass("ok")

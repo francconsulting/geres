@@ -47,6 +47,9 @@ class sesion_controller
 
     }
 
+    public function getSesionObj(){
+        return $this->oSesion;
+    }
     public function gestionarSesiones()
     {
         $this->updateAllSesion(); //actualizar todas las sesiones de los usuarios en la tabla
@@ -62,10 +65,10 @@ class sesion_controller
                     $this->updateSesion($this->oSesion->getIdUser());
                     //todo crear variable de sesion
                 } else {      //si  he cargado una pagina cualquiera
-                    $this->oSesion->setSignIn(0); //logado false
+                   /* $this->oSesion->setSignIn(0); //logado false
                     $this->oSesion->setDtOut(date('Y-m-d H:i:s'));
                     $this->updateSesion($this->oSesion->getIdUser());
-
+                    */
                     // $this->guardar(false);
                     //todo redirigir al index
                 }
@@ -99,7 +102,6 @@ class sesion_controller
         $rs = $this->getRow($ssql, $filtro);
 
         if (!empty($rs)) {
-            echo "aqui ".$rs['signIn'];
             $this->oSesion->setSignIn($rs['signIn']);
             $this->oSesion->setDtIn(date('Y-m-d H:i:s'));
         } else { //no tiene sesion activa
@@ -113,7 +115,7 @@ class sesion_controller
     }
 
     public function updateSesion($id)
-    {
+    { //todo hacerlo como updateAllSesion??????
         $filtro = [
             'idUser' => $id,
             'dtOut'  => 'isNull'
@@ -126,7 +128,6 @@ class sesion_controller
 
         $rs = self::$conn->update(self::$tabla, $parametros, $filtro);
 
-        var_dump($rs);
     }
 
     public function newSesion($id)
@@ -148,15 +149,18 @@ class sesion_controller
             'dtOut'  => date('Y-m-d H:i:s'),
             'signIn' => 0,
         ];
-        //$rs = self::$conn->update(self::$tabla, $parametros ,$filtro);
 
         $ssql = "Update sesiones Set dtOut = :dtOut, signIn = :signIn where (TIMESTAMPDIFF(SECOND,dtIn,NOW()))>" . timeOut . " and isNull(dtOut)";
 
-        $rst = self::$conn->getConn()->prepare($ssql);
-        foreach ($parametros as $k => $v) {
-            $rst->bindParam(":{$k}", $parametros[$k]); //para usar el parametro KEY ($k)
+        try {
+            $rst = self::$conn->getConn()->prepare($ssql);
+            foreach ($parametros as $k => $v) {
+                $rst->bindParam(":{$k}", $parametros[$k]); //para usar el parametro KEY ($k)
+            }
+            $rst->execute();
+        }catch (PDOException $e){
+           echo  $e->getCode();
         }
-        var_dump($rst->execute());
     }
 
     public function getSignIn()

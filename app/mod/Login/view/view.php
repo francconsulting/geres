@@ -40,6 +40,7 @@ if(isset($_POST['accion'])){
             if(!isset( $_SESSION['signIn'])) {
                 $_SESSION['signIn'] = $login->getLogeadoStatus();
             }
+ //    var_dump($_SESSION);
             if(!empty($result)){
                // echo implode($result);
               //  array_unshift($result, true);
@@ -47,12 +48,13 @@ if(isset($_POST['accion'])){
                 $_SESSION['signIn'] = $valido;
                 if ($valido){
 
-
                     array_unshift($result, $result['logado']=true, $result['msg']=null); //TODO cambiar true por metodo que lo obtiene en clase Login
 
-                    $sesion = new sesion_controller($result['idUser'],date('Y-m-d H:i:s'));
 
-var_dump($sesion);
+                    $sesion = new sesion_controller($result['idUser'],date('Y-m-d H:i:s'));
+                Sesion::setSesionObj('SesionUID', $sesion->getSesionObj());
+   //       print_r(Sesion::getSesionObj('SesionUID'));
+   //      var_dump($_SESSION);
 //TODO  crear aqui variable de sesion
 
                 }else{
