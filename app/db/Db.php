@@ -21,6 +21,8 @@ class Db
     private  $conn;
     private static $instancia = null;
     private $errorConn;
+    private $errorMsg;
+    private $errorCode;
 
     private $rowCount;
 
@@ -40,6 +42,8 @@ class Db
 
         } catch (PDOException $e) {
             $this->errorConn= "Error = {$e->getCode()} <br/>Linea {$e->getLine()} .-mensaje = {$e->getMessage()}";
+            $this->errorCode = $e->getCode();
+            $this->errorMsg = $e->getMessage();
             $this->conn = null;
 
         }
@@ -70,6 +74,8 @@ class Db
     {
         return $this->errorConn;
     }
+
+
 
     /**
      * @return mixed
@@ -326,7 +332,7 @@ class Db
         }
         $ssql = substr($ssql, 0, -1);
         if ($filtro) {
-            var_dump($filtro);
+   // var_dump($filtro);
             list($filtroCamp, $filtroParam) = call_user_func_array('self::prepararParam', array($filtro, $asoc));
 
             if (!$asoc) {
@@ -349,11 +355,11 @@ class Db
             }
             $ssql = substr($ssql, 0, -4);
         }
-        echo $ssql;
+//       echo $ssql;
 
         $iCon = 1;
         try {
-            var_dump($this->conn);
+ //     var_dump($this->conn);
             $rst = $this->conn->prepare($ssql);
             foreach ($parametros as $k => $v) {
                 if ($asoc) {

@@ -36,8 +36,10 @@ class user_controller{
     }
 
     public function getUserAllObj($limit_inf=null,$limit_sup=null){
+
         $rows = User_model::getAllObj($limit_inf,$limit_sup);
         //include(MODULO."/view/modules/".$GLOBALS["clase"]."module.php");
+
         return $rows;
     }
 
@@ -61,7 +63,7 @@ class user_controller{
 
     public function guardarUser(){
        // $usu = new User_model($_POST['txtNombre'],$_POST['txtApellidos'],$_POST['txtRol']);
-        $usu = new User_model("fran","paco","ad, ge");
+        $usu = new User_model("fran","paco","ss","ad, ge");
         $usu->guardar();
         $usu->setIdUser($usu->getlastInsertId());  //guardar el ultimo id insertado
         $this->getUserAllObj();

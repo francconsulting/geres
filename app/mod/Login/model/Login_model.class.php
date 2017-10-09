@@ -8,7 +8,7 @@
 
 class Login_model extends Login
 {
-    use DbCommon;
+    use \DbCommon;
 
     private static $conn;
     private static $tabla;

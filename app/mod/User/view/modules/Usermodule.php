@@ -5,19 +5,31 @@
  * Date: 13/08/2017
  * Time: 19:55
  */
+
+echo Helper::getCssExtra(array('plugins/datatables/dataTables.bootstrap'));
+//DATATABLES
+echo Helper::getJsExtra(array(
+    '/plugins/datatables/jquery.dataTables.min',
+    'plugins/datatables/dataTables.bootstrap.min'
+));
+
 $totalRegistros = User_model::getRowCount();
+
 //if (!empty($rows)){
 if ($totalRegistros>0){
     echo "Total Registros: ". User_model::getRowCount()."<br />";
     //header('Content-type: application/json');
 
     ?>
+    <!-- DataTables -->
+
     <div class="box">
         <div class="box-header">
             <h3 class="box-title">Usuarios</h3>
         </div>
         <div class="box-body">
-            <table id="example1" class="table table-bordered table-striped" cellpadding="3" cellspacing="2">
+            <table id="listaUsuario" class="table table-bordered table-striped dataTable"  cellpadding="3" cellspacing="2">
+                <thead>
                 <tr>
                     <th>nº</th>
                     <th>id</th>
@@ -26,7 +38,8 @@ if ($totalRegistros>0){
                     <th>Rol</th>
                     <th></th>
                 </tr>
-
+                </thead>
+                <tbody>
                 <?php
                 if (count($rows) > 1) {
                     $i=1;
@@ -56,7 +69,9 @@ if ($totalRegistros>0){
                     </tr>
 
                 <?php } ?>
+                </tbody>
             </table>
+
         </div>
     </div>
 
@@ -69,3 +84,4 @@ if ($totalRegistros>0){
 
 ?>
 
+<input type="submit" name="idRecarga" value="recargar">

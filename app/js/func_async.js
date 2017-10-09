@@ -11,7 +11,7 @@
  * @param tipoDato      Tipo de datos que seran recibidos del servidor (xml, html, json, text, script, jsonp)
  */
 function callAjax(url,doneFuncion,parametros,tipo,tipoDato) {
-    //console.log(parametros);
+       //console.log(parametros);
     parametros = parametros || "";  //si no hay parametros se pone por defecto una cadena vacia
     tipo = tipo || "POST";          //si no se indica el tipo se pone por defecto POST
     tipoDato = tipoDato || "json";  //si no se indica el tipo de datos por defecto se pone json
@@ -23,8 +23,9 @@ function callAjax(url,doneFuncion,parametros,tipo,tipoDato) {
         data: parametros,       //parametros que se le pasan al hacer la peticion
         async: true, //[bool que indica sincronía/asincronia]
         beforeSend: function (result) {         //antes de enviar la peticion
+
             $("#procesando").html("Procesando, espere por favor...");       //mostramos un mensaje al usuario
-            $("#procesando").clearQueue().fadeIn();     //mostramos el mensaje con efecto y eliminando de la cola los elementos no procesados aun
+           $("#procesando").clearQueue().fadeIn();     //mostramos el mensaje con efecto y eliminando de la cola los elementos no procesados aun
         },
         /*success:  function (result) {
            // $("#procesando").fadeOut(1000);     //cuando se realiza la peticion se oculta el mensaje con un efecto

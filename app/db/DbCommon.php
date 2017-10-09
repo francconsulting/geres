@@ -1,11 +1,11 @@
 <?php
-
 /**
  * Created by PhpStorm.
  * User: fmbv
  * Date: 06/08/2017
  * Time: 14:29
  */
+
 trait DbCommon
 {
 
@@ -354,7 +354,7 @@ echo self::$id." ".$this->{self::$id};
      * ARRAY
      * @return null
      */
-    public static function getAll($limit_inf = null, $limit_sup = null)
+    public static function getAll($tipoAsoc = PDO::FETCH_ASSOC, $limit_inf = null, $limit_sup = null )
     {
         self::setConexion();
         //recoger el total de registros
@@ -378,7 +378,7 @@ echo self::$id." ".$this->{self::$id};
         $rs = self::$conn->select($ssql);
 
         if ($rs) {
-            $rs = $rs->fetchAll();
+            $rs = $rs->fetchAll($tipoAsoc);
         } else {
             $rs = null;
         }

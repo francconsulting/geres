@@ -19,6 +19,14 @@ class Helper
         }
        return $linkCss;
     }
+    public static function getCssExtra($aClass, $media='screen'){
+        $linkCss =null;
+        foreach ($aClass as $Class) {
+            $linkCss .= "<link rel=\"stylesheet\" href=\"http://{$_SERVER['SERVER_NAME']}".PROJECT."/{$Class}.css\" media=\"{$media}\" >";
+            //$linkCss .= "<link rel=\"stylesheet\" href=\"../../css/{$Class}.css\" media=\"{$media}\" >";
+        }
+        return $linkCss;
+    }
 
     public static function getJs($aJs){
         $linkJs = null;
@@ -28,4 +36,11 @@ class Helper
         return $linkJs;
     }
 
+    public static function getJsExtra($aJs){
+        $linkJs = null;
+        foreach ($aJs as $Js) {
+            $linkJs .= "<script src=\"http://{$_SERVER['SERVER_NAME']}".PROJECT."/{$Js}.js\" ></script>";
+        }
+        return $linkJs;
+    }
 }
