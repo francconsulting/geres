@@ -7,12 +7,20 @@
  */
 
 define("CONN", "conn");  //definicion del nombre de la varible
-//var_dump(CONN);
-${CONN} = Db::conex();
 
-//var_dump(${CONN});
+${CONN} = Db::conex(); //Apertura de la conexion
+//var_dump (${CONN});
 if (empty(${CONN}->getConn())){
-    die ("Error: no se ha podido conectar con la base de datos.<br/>".${CONN}->getErrorConn());
+
+    if(isset($_POST['accion'])) {
+        $msg = "Error: no se ha podido conectar con la base de datos";
+        array_push($result, $result['logado'] = false, $result['msg'] = $msg);
+        echo json_encode($result);
+        die();
+    }
+    /*
+      die ("<div class=\"alert alert-danger alert-dismissible\">Error: no se ha podido conectar con la base de datos.<br/>".${CONN}->getErrorConn()."</div>");
+    */
 }
 
  ?>
