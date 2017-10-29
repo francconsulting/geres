@@ -8,7 +8,7 @@
 
 class Login_model extends Login
 {
-    use DbCommon;
+    use \DbCommon;
 
     private static $conn;
     private static $tabla;
@@ -16,36 +16,45 @@ class Login_model extends Login
 
     /**
      * Login_model constructor.
+     * Llamada al constructor padre y
+     * establecer los parametros para la conexion
+     * con la base de datos
      */
     public function __construct()
     {
         parent::login();
-        $this->setConexion();
-    }
-
-    private function setConexion(){
-        self::$conn =  $GLOBALS{CONN};
-        self::$tabla = TABLA;
-        self::$id = ID;
+        $this->setConexion(); //establecer los parametros usados en la conexion
     }
 
 
-
-    public function  getDataUser(){
+    /**
+     * Obtener datos de la base de datos según los
+     * datos introducidos en el formulario
+     * @return null/array con datos del recordset
+     */
+    public function getDataUser()
+    {
         $filtro = ['nombre' => $_POST['usuario']];
         $ssql = "select * from " . self::$tabla . " where sNombre = :nombre";
 
-        $rs = $this->getRow($ssql,$filtro);
-        if(!empty($rs)) {
+        $rs = $this->getRow($ssql, $filtro);
+        if (!empty($rs)) {
             $this->setLogeado(true);
         } else {
             $this->setLogeado(false);
         }
         return $rs;
-
     }
 
-    public function verifPass($input_pass, $rs_pass){
+    /**
+     * Comprobacion y verificacion del password
+     * introducido en el formulario
+     * @param $input_pass Password introducido
+     * @param $rs_pass  Password en la bd
+     * @return bool
+     */
+    public function verifPass($input_pass, $rs_pass)
+    {
         $valido = password_verify($input_pass, $rs_pass);
         $this->setLogeado($valido);
         return $valido;

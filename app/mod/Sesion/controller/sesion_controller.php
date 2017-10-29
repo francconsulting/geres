@@ -6,8 +6,7 @@
  * Time: 11:51
  */
 $GLOBALS["clase"] = ucfirst(str_replace("_controller", "", basename(__FILE__, ".php")));
-define('timeOut', 10);
-
+define('timeOut',899);
 
 //define("TABLA","sesiones");
 //define("ID", "idSesion");
@@ -16,9 +15,10 @@ class sesion_controller
 {
 
 
-    use DbCommon;
+    use \DbCommon;
 
     private $oSesion;
+   // private $idSesion;
     private static $conn;
     private static $tabla = "sesiones";
     private static $id = "idSesion";
@@ -26,14 +26,25 @@ class sesion_controller
     /**
      * sesion_controller constructor.
      */
-    public function __construct($idUser, $dtIn, $bSignIn = null, $dtOut = null)
+    //public function __construct($idUser, $dtIn, $bSignIn = null, $dtOut = null)
+    public function __construct($idSesion)
     {
         // $this->miSesion = Sesion::sesion("pruebaIdSesion", "idUSUARIO", true, "horaInicio", "HoraFin");
 
-        $this->oSesion = Sesion::sesion($idUser, $dtIn, $bSignIn = null, $dtOut = null);
+        /*$this->oSesion = Sesion::getSesionObj('SesionUID');
+        $this->oSesion->gestionarSesiones('SesionUID');
+        var_dump($this->oSesion);
+        return $this->oSesion;*/
+
+        //$this->idSesion = $idSesion;
+        $sesion = Sesion::getSesionObj($idSesion);
+        $this->oSesion = $sesion->gestionarSesiones();
+    //    var_dump($this->oSesion);
+        return $this->oSesion;
+      /*  $this->oSesion = Sesion::sesion($idUser, $dtIn, $bSignIn = null, $dtOut = null);
         // $this->guardarSesion();
         $this->setConexion();
-        $this->gestionarSesiones();
+        $this->gestionarSesiones();*/
     }
 
 
@@ -47,49 +58,27 @@ class sesion_controller
 
     }
 
+    public function getSesionObj(){
+        return $this->oSesion;
+    }
     public function gestionarSesiones()
     {
-        $this->updateAllSesion(); //actualizar todas las sesiones de los usuarios en la tabla
-
-        if ($this->getStatusSesion($this->oSesion->getIdUser())) {
-            $hora = $this->oSesion->getDtIn();
-            $intervalo = strtotime(date('Y-m-d H:i:s')) - strtotime($hora);
-            if ($intervalo > timeOut) {
-                //TODO ->si vengo del index o del login
-                if (!isset($_SESSION['signIn'])) {
-                    //actualizar sesion
-                    $this->oSesion->setDtIn(date('Y-m-d H:i:s'));
-                    $this->updateSesion($this->oSesion->getIdUser());
-                    //todo crear variable de sesion
-                } else {      //si  he cargado una pagina cualquiera
-                    $this->oSesion->setSignIn(0); //logado false
-                    $this->oSesion->setDtOut(date('Y-m-d H:i:s'));
-                    $this->updateSesion($this->oSesion->getIdUser());
-
-                    // $this->guardar(false);
-                    //todo redirigir al index
-                }
-
-
-            } else {
-                //Todo ->no ha caducado la sesion  por tanto hay que actualizar
-                $this->oSesion->setDtIn(date('Y-m-d H:i:s'));
-                $this->oSesion->setDtOut(null);
-                $this->updateSesion($this->oSesion->getIdUser());
-            }
-
-        } else {
-            //TODO ->si vengo del index o del login
-            if (!isset($_SESSION['signIn'])) {
-                $this->oSesion->setSignIn(1);
-                $this->oSesion->setDtIn(date('Y-m-d H:i:s'));
-                $this->newSesion($this->oSesion->getIdUser());
-            } else {
-                //todo redirigir al index
-            }
-        }
-
+       return $this->oSesion->gestionarSesiones();
     }
+
+    public function getSignIn()
+    {
+        return $this->oSesion->getSignIn();
+    }
+
+    public function signOutSesion(){
+        return $this->oSesion->signOutSesion();
+    }
+
+
+
+
+
 
     public function getStatusSesion($id)
     {
@@ -99,12 +88,13 @@ class sesion_controller
         $rs = $this->getRow($ssql, $filtro);
 
         if (!empty($rs)) {
-            echo "aqui ".$rs['signIn'];
             $this->oSesion->setSignIn($rs['signIn']);
             $this->oSesion->setDtIn(date('Y-m-d H:i:s'));
         } else { //no tiene sesion activa
-            session_unset();
-            session_destroy();
+         /*   if(isset($_SESSION['SesionUID'])) {
+                session_unset();
+                session_destroy();
+            }*/
             $this->oSesion->setSignIn(0);
             $this->oSesion->setDtIn(date('Y-m-d H:i:s'));
         }
@@ -113,7 +103,7 @@ class sesion_controller
     }
 
     public function updateSesion($id)
-    {
+    { //todo hacerlo como updateAllSesion??????
         $filtro = [
             'idUser' => $id,
             'dtOut'  => 'isNull'
@@ -126,7 +116,6 @@ class sesion_controller
 
         $rs = self::$conn->update(self::$tabla, $parametros, $filtro);
 
-        var_dump($rs);
     }
 
     public function newSesion($id)
@@ -148,21 +137,21 @@ class sesion_controller
             'dtOut'  => date('Y-m-d H:i:s'),
             'signIn' => 0,
         ];
-        //$rs = self::$conn->update(self::$tabla, $parametros ,$filtro);
 
         $ssql = "Update sesiones Set dtOut = :dtOut, signIn = :signIn where (TIMESTAMPDIFF(SECOND,dtIn,NOW()))>" . timeOut . " and isNull(dtOut)";
 
-        $rst = self::$conn->getConn()->prepare($ssql);
-        foreach ($parametros as $k => $v) {
-            $rst->bindParam(":{$k}", $parametros[$k]); //para usar el parametro KEY ($k)
+        try {
+            $rst = self::$conn->getConn()->prepare($ssql);
+            foreach ($parametros as $k => $v) {
+                $rst->bindParam(":{$k}", $parametros[$k]); //para usar el parametro KEY ($k)
+            }
+            $rst->execute();
+        }catch (PDOException $e){
+           echo  $e->getCode();
         }
-        var_dump($rst->execute());
     }
 
-    public function getSignIn()
-    {
-        return $this->oSesion->getSignIn();
-    }
+
 
     public function getDtIn()
     {

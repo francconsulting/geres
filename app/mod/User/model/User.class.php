@@ -16,6 +16,7 @@ class User
     private $sApellidos;
     private $sPassword;
     private $aRol;
+    private $sAvatar;
 
 
     /**
@@ -27,13 +28,14 @@ class User
      * @param string $aRol
      */
     public function __construct($sNombre = null, $Apellidos = null ,
-                                $sPassword = null, $aRol = null, $idUser=null)
+                                $sPassword = null, $aRol = null, $sAvatar = null,  $idUser=null)
     {
         $this->idUser = $idUser;
         $this->sNombre = $sNombre;
         $this->sApellidos = $Apellidos;
         $this->sPassword = $sPassword;
         $this->aRol = $aRol;
+        $this->sAvatar = $sAvatar;
 
 
     }
@@ -70,6 +72,7 @@ class User
         return get_object_vars($this);
     }
 
+
     /**
      * @return int
      */
@@ -89,7 +92,7 @@ class User
     /**
      * @return string
      */
-    public function getSNombre()
+    public function getNombre()
     {
         return $this->sNombre;
     }
@@ -97,7 +100,7 @@ class User
     /**
      * @param string $sNombre
      */
-    public function setSNombre($sNombre)
+    public function setNombre($sNombre)
     {
         $this->sNombre = $sNombre;
     }
@@ -121,7 +124,7 @@ class User
     /**
      * @return string
      */
-    public function getSPass()
+    public function getPass()
     {
         return $this->sPassword;
     }
@@ -129,7 +132,7 @@ class User
     /**
      * @param string $sPass
      */
-    public function setSPass($sPass)
+    public function setPass($sPass)
     {
         $this->sPassword = $sPass;
     }
@@ -148,6 +151,22 @@ class User
     public function setARol($aRol)
     {
         $this->aRol = $aRol;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAvatar()
+    {
+        return $this->sAvatar;
+    }
+
+    /**
+     * @param mixed $sAvatar
+     */
+    public function setAvatar($sAvatar)
+    {
+        $this->sAvatar = $sAvatar;
     }
 
 

@@ -24,3 +24,13 @@ function enviarForm(formulario, url){
     //$("#"+form).submit();  //TODO ->no funciona ??
     document[formulario].submit();
 }
+
+var menu = function (){
+    $(".sidebar-menu a").on('click', function(evt){
+       console.log($(this).data().modulo.toUpperCase());
+       $("#hmod").val($(this).data().modulo);
+        evt.preventDefault();
+
+        enviarForm("frmCuerpo","page.php"); //TODO -> descomentar
+    })
+}
