@@ -16,3 +16,10 @@ test.html
 /dist/
 /pages/
 /plugins/
+yarn.js
+starter.html
+readme.md
+package.json
+license
+gruntfile.jscomposer.json
+bower.json
