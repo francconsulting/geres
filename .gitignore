@@ -21,6 +21,7 @@ starter.html
 readme.md
 package.json
 license
-gruntfile.jscomposer.json
+gruntfile.js
+composer.json
 bower.json
 changelog.md
