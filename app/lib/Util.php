@@ -65,6 +65,29 @@ class Util
     }
 
 
+    //Métodos para manejo de fecha
+   public static function fecha($fecha){
+
+        $fecha=str_replace("'","",$fecha);
+        $fecha=explode("-",$fecha);
+
+        $dia=$fecha[0];
+        $mes=$fecha[1];
+        $anio=substr($fecha[2],0,4);
+        $hora=substr($fecha[2],5,2);
+        $min=substr($fecha[2],8,2);
+        $sec=substr($fecha[2],11,2);
+        echo " dia:  ".$fecha[0];
+        echo " mes:  ".$fecha[1];
+        echo " año:  ". substr($fecha[2],0,4);
+        echo " hora: ". substr($fecha[2],5,2);
+        echo " min:  ". substr($fecha[2],8,2);
+        echo " sec:  ". substr($fecha[2],11,2);
+       // echo " ahora: ".now();
+        $fecha=array("dia"=>$dia,"mes"=>$mes,"anio"=>$anio,"hora"=>$hora,"min"=>$min,"sec"=>$sec);
+        return $fecha;
+    }
+
     /**
      * obtener url externa
      * @param $url
@@ -96,4 +119,8 @@ class Util
         header("Cache - Control: post - check = 0, pre - check = 0", false);
         header("Pragma: no - cache");
     }
+
+
+
+
 }

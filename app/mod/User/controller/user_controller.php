@@ -30,14 +30,18 @@ require_once("./model/".$GLOBALS["clase"]."_model.class.php");*/
 
 class user_controller{
 
+
+
     public function __construct()
     {
         //TODO poner aqui los 2 require de la linea 20 y 21 o hacer un script que carge los archivos
     }
 
     public function getUserAllObj($limit_inf=null,$limit_sup=null){
+
         $rows = User_model::getAllObj($limit_inf,$limit_sup);
         //include(MODULO."/view/modules/".$GLOBALS["clase"]."module.php");
+
         return $rows;
     }
 
@@ -59,12 +63,41 @@ class user_controller{
     }
 
 
-    public function guardarUser(){
-       // $usu = new User_model($_POST['txtNombre'],$_POST['txtApellidos'],$_POST['txtRol']);
-        $usu = new User_model("fran","paco","ad, ge");
+    public function guardarUser($sNombre, $sApellidos, $sPass, $aRol, $sEmail,
+                                $sTelefono1, $sTelefono2, $sDireccion,
+                                $sCodigoPostal, $cGenero, $sAvatar = "avatar_h1")
+    {
+        $usu = new User_model($sNombre, $sApellidos, $sPass, $aRol, $sEmail, $sTelefono1,
+                             $sTelefono2, $sDireccion,$sCodigoPostal, $cGenero, $sAvatar );
+
         $usu->guardar();
-        $usu->setIdUser($usu->getlastInsertId());  //guardar el ultimo id insertado
-        $this->getUserAllObj();
+       /* $usu->setIdUser($usu->getlastInsertId());  //guardar el ultimo id insertado
+        $this->getUserAllObj();*/
+    }
+
+    public function actualizarUser(){
+
+        $datos = (object) $_POST;
+
+        $usu = User_model::getIdObj($datos->idUser);
+        $usu->setNombre($datos->sNombre);
+        $usu->setApellidos($datos->sApellidos);
+        if(empty($datos->sPassword)){
+            $usu->setPass( $usu->getPass());
+        }else {
+            $usu->setPass(crypt($datos->sPassword, Util::getSalt()));
+        }
+        $usu->setARol($datos->aRol);
+
+        $usu->setEmail($datos->sEmail);
+        $usu->setTelefono1($datos->sTelefono1);
+        $usu->setTelefono2($datos->sTelefono2);
+        $usu->setDireccion($datos->sDireccion);
+        $usu->setCodigoPostal($datos->sCodigoPostal);
+        $usu->setGenero($datos->cGenero);
+        $usu->setAvatar($datos->sAvatar);
+
+        return $usu->guardar();
     }
 
     public function borrarUser(){
@@ -79,9 +112,15 @@ class user_controller{
        //  $this->getUserAllObj();
     }
 
-    public function registrarUser(){
-        $usu = new User_model($_POST['txtNombre'],$_POST['txtApellidos'],crypt($_POST['pass'],  Util::getSalt()),$_POST['txtRol']);
-        $usu->guardar();
+    public function registrarUser($sNombre, $sApellidos, $sPass, $aRol,
+                                    $sEmail, $sTelefono1, $sTelefono2, $sDireccion,
+                                    $sCodigoPostal, $cGenero, $sAvatar = "avatar_h1")
+    {
+        $usu = new User_model($sNombre,$sApellidos,$sPass,$aRol,$sAvatar,
+                            $sTelefono1, $sTelefono2, $sDireccion,
+                             $sCodigoPostal, $cGenero, $sEmail,nul);
+        $res =$usu->guardar();
+        return $res;
     }
 
 }

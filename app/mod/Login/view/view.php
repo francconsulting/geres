@@ -17,18 +17,20 @@ require_once (PATH.'/geres/app/lib/common.php');
 
 //echo Util::VariablesServidor();
 if(isset($_POST['accion'])){
+    //$_SESSION['p']="caracola";
     require_once(PATH . PROJECT . APP . "/db/db.openconex.inc.php");
     require_once(PATH . PROJECT . APP . "/mod/Login/controller/login_controller.php");  //todo crear la raiz
     require_once(PATH.PROJECT.APP."/mod/Login/model/Login.class.php");
     require_once(PATH.PROJECT.APP."/mod/Login/model/Login_model.class.php");
 
-
     $accion = $_POST['accion'];
 
     if ($accion=='acceder'){
+
         require_once(PATH . PROJECT . APP . "/mod/Sesion/controller/sesion_controller.php");
         require_once(PATH.PROJECT.APP."/mod/Sesion/model/Sesion.class.php");
         require_once(PATH.PROJECT.APP."/mod/Sesion/model/Sesion_model.class.php");
+
 
            $login = new login_controller();
            $result = $login->getLogeadoDataUser();
@@ -40,6 +42,7 @@ if(isset($_POST['accion'])){
             if(!isset( $_SESSION['signIn'])) {
                 $_SESSION['signIn'] = $login->getLogeadoStatus();
             }
+ //    var_dump($_SESSION);
             if(!empty($result)){
                // echo implode($result);
               //  array_unshift($result, true);
@@ -47,12 +50,16 @@ if(isset($_POST['accion'])){
                 $_SESSION['signIn'] = $valido;
                 if ($valido){
 
-
                     array_unshift($result, $result['logado']=true, $result['msg']=null); //TODO cambiar true por metodo que lo obtiene en clase Login
 
-                    $sesion = new sesion_controller($result['idUser'],date('Y-m-d H:i:s'));
 
-var_dump($sesion);
+                    $sesion = new sesion_controller($result['idUser'],date('Y-m-d H:i:s'));
+                Sesion::setSesionObj('SesionUID', $sesion->getSesionObj());
+   //       print_r(Sesion::getSesionObj('SesionUID'));
+
+
+
+
 //TODO  crear aqui variable de sesion
 
                 }else{
