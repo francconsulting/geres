@@ -23,3 +23,4 @@ package.json
 license
 gruntfile.jscomposer.json
 bower.json
+changelog.md
