@@ -6,11 +6,10 @@
  * Date: 23/07/2017
  * Time: 18:04
  */
-
+if(empty(defined("DIRMOD"))){ echo "No está permitida la ejecucion del script";}
 class User
 {
     //Definición de las propiedades. Coinciden con los nombres de los campo de la tabla usuario
-
     private $idUser;
     private $sNombre;
     private $sApellidos;
@@ -36,8 +35,6 @@ class User
         $this->sPassword = $sPassword;
         $this->aRol = $aRol;
         $this->sAvatar = $sAvatar;
-
-
     }
 
 
@@ -50,7 +47,7 @@ class User
     public function __set($clave, $valor){ return $this->$clave=$valor; }
 
     /**
-     * Método mágico para obtener las propiedade sde los objetos
+     * Método mágico para obtener las propiedade de los objetos
      * @param $clave    propiedad del objeto
      * @return mixed
      */
@@ -74,6 +71,7 @@ class User
 
 
     /**
+     * Obtener el id de usuario
      * @return int
      */
     public function getIdUser()
@@ -82,6 +80,7 @@ class User
     }
 
     /**
+     * Establecer el id de usuario
      * @param int $idUser
      */
     public function setIdUser($idUser)
@@ -90,6 +89,7 @@ class User
     }
 
     /**
+     * Obtener el nombre
      * @return string
      */
     public function getNombre()
@@ -98,6 +98,7 @@ class User
     }
 
     /**
+     * Establecer el nombre
      * @param string $sNombre
      */
     public function setNombre($sNombre)
@@ -106,6 +107,7 @@ class User
     }
 
     /**
+     * Obtener los apellidos
      * @return string
      */
     public function getApellidos()
@@ -114,6 +116,7 @@ class User
     }
 
     /**
+     * Establecer los apellidos
      * @param string $Apellidos
      */
     public function setApellidos($Apellidos)
@@ -122,6 +125,7 @@ class User
     }
 
     /**
+     * Obtener el password
      * @return string
      */
     public function getPass()
@@ -130,6 +134,7 @@ class User
     }
 
     /**
+     * Establecer el password
      * @param string $sPass
      */
     public function setPass($sPass)
@@ -138,6 +143,7 @@ class User
     }
 
     /**
+     * Obtener el rol/permisos del usuario
      * @return string
      */
     public function getARol()
@@ -146,7 +152,8 @@ class User
     }
 
     /**
-     * @param string $aRol
+     * Establecer el rol/permisos del usuario
+     * @param string Separados por comas
      */
     public function setARol($aRol)
     {
@@ -154,6 +161,7 @@ class User
     }
 
     /**
+     * Obtener la ruta de la imagen del avatar
      * @return mixed
      */
     public function getAvatar()
@@ -162,6 +170,7 @@ class User
     }
 
     /**
+     * Establecer la ruta de la imagen del avatar
      * @param mixed $sAvatar
      */
     public function setAvatar($sAvatar)

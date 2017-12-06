@@ -10,11 +10,11 @@
 class User_model extends User
 
 {
+    //metodos genericos, comunes a todas las clases
     use DbCommon;
     use ClassCommon;
-    /**
-     * Guardar los datos del usuario en la tabla
-     */
+
+    // Definicion de variables
     private static $conn;
     private static $tabla;
     private static $id;
@@ -32,7 +32,7 @@ class User_model extends User
         $aRol = null,  $sEmail = null, $sTelefono1 = null, $sTelefono2 = null,
         $sDireccion = null, $sCodigoPostal = null, $cGenero = null, $sAvatar = null, $idUser=null)
     {
-
+        //llamada al constructor padre
         parent::__construct($sNombre, $Apellidos , $sPassword, $aRol, $cGenero, $sAvatar, $idUser);
         $this->sEmail = $sEmail;
         $this->sTelefono1 = $sTelefono1;
@@ -42,15 +42,16 @@ class User_model extends User
         $this->cGenero = $cGenero;
         $this->setConexion();
     }
-
+/* TODO Eliminar porque esta en DbCommon
     private function setConexion(){
         self::$conn =  $GLOBALS{CONN};
         self::$tabla = TABLA;
         self::$id = ID;
     }
-
+*/
     /**
-     * @return null
+     * Obtener el email
+     * @return mixed
      */
     public function getEmail()
     {
@@ -58,7 +59,8 @@ class User_model extends User
     }
 
     /**
-     * @param null $sEmail
+     * Establecer  el email
+     * @param String|null $sEmail
      */
     public function setEmail($sEmail)
     {
@@ -66,6 +68,7 @@ class User_model extends User
     }
 
     /**
+     * Obtener el telefono1
      * @return mixed
      */
     public function getTelefono1()
@@ -74,6 +77,7 @@ class User_model extends User
     }
 
     /**
+     * Establecer el telefono1
      * @param mixed $sTelefono1
      */
     public function setTelefono1($sTelefono1)
@@ -82,6 +86,7 @@ class User_model extends User
     }
 
     /**
+     * Obtener el telefono2
      * @return mixed
      */
     public function getTelefono2()
@@ -90,6 +95,7 @@ class User_model extends User
     }
 
     /**
+     * Establecer el telefono2
      * @param mixed $sTelefono2
      */
     public function setTelefono2($sTelefono2)
@@ -98,6 +104,7 @@ class User_model extends User
     }
 
     /**
+     * Obtener la direccion
      * @return mixed
      */
     public function getDireccion()
@@ -106,6 +113,7 @@ class User_model extends User
     }
 
     /**
+     * Establecer la direccion
      * @param mixed $sDireccion
      */
     public function setDireccion($sDireccion)
@@ -114,6 +122,7 @@ class User_model extends User
     }
 
     /**
+     * Obtener el codigo postal
      * @return mixed
      */
     public function getCodigoPostal()
@@ -122,6 +131,7 @@ class User_model extends User
     }
 
     /**
+     * Establecer el codigo postal
      * @param mixed $sCodigoPostal
      */
     public function setCodigoPostal($sCodigoPostal)
@@ -130,6 +140,7 @@ class User_model extends User
     }
 
     /**
+     * Obtener el genero
      * @return null
      */
     public function getGenero()
@@ -138,6 +149,7 @@ class User_model extends User
     }
 
     /**
+     * Establecer el genero
      * @param null $sGenero
      */
     public function setGenero($cGenero)

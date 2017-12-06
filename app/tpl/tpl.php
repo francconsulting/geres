@@ -1,6 +1,7 @@
-<?php $sesion = Sesion::getSesionObj('SesionUID');?>
 <?php
-$ultimo_acceso = date("d-m-Y h:i:s",strtotime($sesion->getDtUltimoAcceso()));
+$sesion = Sesion::getSesionObj('SesionUID');
+$ultimo_acceso = date("d-m-Y H:i:s",strtotime($sesion->getDtUltimoAcceso()));
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -416,7 +417,8 @@ $ultimo_acceso = date("d-m-Y h:i:s",strtotime($sesion->getDtUltimoAcceso()));
         <form action="" id="frmCuerpo" name="frmCuerpo" method="post">
         <div id="contenido">
             <?php
-            include(MODULO . "/view/modules/" . $GLOBALS["clase"] . "module2.php");
+            //include(MODULO . "/view/modules/" . $GLOBALS["clase"] . "module2.php"); //TODO eliminar esta linea
+            require_once(PATH . PROJECT . APP."/mod/" . $_POST['hmod'] . "/index.php");
 
             ?>
 

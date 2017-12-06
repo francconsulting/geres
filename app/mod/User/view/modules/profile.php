@@ -63,8 +63,6 @@
 
                     <hr>
 
-
-
                     <hr>
 
                     <strong><i class="fa fa-file-text-o margin-r-5"></i> Notas</strong>
@@ -399,7 +397,7 @@
                                     <input type="file" class="form-control" id="fAvatar" name="fAvatar" onchange="previewFile()">
                                 </div>
 
-                                <input type="hidden" name="sAvatar" id="sAvatar">
+                                <input type="hiddenn" name="sAvatar" id="sAvatar">
                                 <span id="msgfile"  >Tamaño máximo 2Mb</span>
                                 </div>
                             </div>

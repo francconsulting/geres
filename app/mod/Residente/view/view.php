@@ -7,8 +7,8 @@
  */
 ob_start();
 //session_start();
-define("PATH",$_SERVER['DOCUMENT_ROOT']);  //TODO raiz del proyecto
-define ("MODULO",str_replace("view", "", dirname(__FILE__)));
+//define("PATH",$_SERVER['DOCUMENT_ROOT']);  //TODO raiz del proyecto
+//define ("MODULO",str_replace("view", "", dirname(__FILE__)));
 
 //$cfg = (object) parse_ini_file(PATH.'/geres/app/cfg/config_global.ini');
 require_once (PATH.'/geres/app/lib/common.php');
