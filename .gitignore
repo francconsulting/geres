@@ -16,7 +16,7 @@ test.html
 /dist/
 /pages/
 /plugins/
-yarn.js
+yarn.lock
 starter.html
 readme.md
 package.json
