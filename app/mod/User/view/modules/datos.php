@@ -1,4 +1,13 @@
 <?php
+
+
+
+
+
+
+
+
+
 /** Establecer Constantes y carga de clases generales. */
 define("PATH",$_SERVER['DOCUMENT_ROOT']);  //TODO raiz del proyecto
 require_once (PATH.'/geres/app/lib/common.php');
@@ -10,8 +19,6 @@ require_once(PATH.PROJECT.APP."/db/db.openconex.inc.php");
 /** -----------------//--------------------- */
 
 require_once(PATH . PROJECT . APP . "/mod/Sesion/controller/sesion_controller.php");
-
-
 $sesion = new sesion_controller('SesionUID');
 
 $datos = array();

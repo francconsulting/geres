@@ -19,13 +19,12 @@ require_once(PATH.PROJECT.APP."/db/db.openconex.inc.php");
 /** -----------------//--------------------- */
 
 require_once(PATH . PROJECT . APP . "/mod/Sesion/controller/sesion_controller.php");
-
-
 $sesion = new sesion_controller('SesionUID');
 
 $datos = array();
 
 if($sesion->getSignIn()) {  //si esta logado el usuario
+
     /** carga de clases para manipular usuarios */
     require_once (PATH.PROJECT.APP."/mod/User/controller/user_controller.php");
     require_once(PATH.PROJECT.APP."/mod/User/model/User.class.php");

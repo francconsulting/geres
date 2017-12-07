@@ -3,7 +3,23 @@
  */
 
 $(document).ready(function () {
+alert(document.cookie);
 
+    function getCookie(nombre){
+        let aCookies = decodeURIComponent(document.cookie).split(";");
+        let  signoIgual, sNombreCook, sValorCook = null;
+        for (var i = 0; i < aCookies.length; i++) {
+            signoIgual = aCookies[i].indexOf("=");
+            sNombreCook = aCookies[i].substr(0,signoIgual);
+            alert("array "+i+" "+sNombreCook+ " "+nombre);
+            if (sNombreCook == nombre) {
+                sValorCook = aCookies[i].substr(signoIgual + 1);
+                //  alert("array "+sValorCook);
+            }
+
+        }
+        return sValorCook;
+    }
     /**
      * Funcionalidad en el boton cerrar cuando se hace click
      */
@@ -93,7 +109,7 @@ function Table() {
         // "ajax":"app/mod/user/view/modules/datos.php",
         "ajax": {
             "method": "POST",                                   //metodo de llamada al ajax
-            "url": "app/mod/user/view/modules/datos.php"        //url donde obtener los datos
+            "url": "app/mod/user/controller/user_datos.php"        //url donde obtener los datos
             /* "dataSrc": function(d){
                  console.log("en AJAX:" +d.data);
                  return d.data;
@@ -213,7 +229,7 @@ function borrar(datos) {
     $(".modal-footer").append("<button id='btnEliminar' type='button' class='btn btn-danger'>Eliminar</button>") //añadir el boton de eliminar
 
     $("#btnEliminar").on('click', function () {           //funcionalidad del boton eliminar
-        callAjax("./app/mod/User/view/modules/datos.php", function (result) {       //eliminar de la tabla el id
+        callAjax("./app/mod/User/controller/user_datos.php", function (result) {       //eliminar de la tabla el id
                 tabla.ajax.reload(null, false);         //actualizar la tabla
                 $("#ventanaModal").modal('hide');       //ocultar la ventana modal
                 $(".modal-title").parent("div").removeClass('alert alert-error');   //quitar la clase a la ventana modal
@@ -295,7 +311,7 @@ function actualizar(datos) {
     console.log(param);
     if (bUpdate) {      //si hay cambios
         param['accion'] = 'update';
-        callAjax("./app/mod/User/view/modules/datos.php", function (result) {
+        callAjax("./app/mod/User/controller/user_datos.php", function (result) {
             //console.log(result);
             if (result.signIn && result.exito) {        //si la sesion esta activa y se ha actualizado correctamente
                 if ($("#fAvatar")[0].files[0] != undefined) {   //uploader para el avatar si se ha definido
@@ -687,7 +703,7 @@ function cargarArchivo() {
 
 
             console.log(formData);
-            uploadAjax('./app/mod/User/view/modules/datos.php', function (result) {
+            uploadAjax('./app/mod/User/controller/user_datos.php', function (result) {
                 // alert('fin');
                 console.log(result.exito);
                 /* var dataImg = result;

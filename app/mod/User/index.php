@@ -13,8 +13,8 @@
 
 //require_once (PATH.'/geres/app/lib/common.php'); //TODO quitado tenporalmente
 
-
-
+$GLOBALS["clase"] = "User";
+setcookie('COOKIE-SESION',md5(APP.DIRMOD.$GLOBALS["clase"]),-1,'/');
 // cargar los css y js generales necesarios para el funcionamiento del módulo
 echo Helper::getCss(array('common', 'js/jQuery-File-Upload/css'));
 echo Helper::getJs(array(
@@ -23,7 +23,7 @@ echo Helper::getJs(array(
     'js/func_async',
     'js/bsValidator/bootstrapValidator.min',
     'js/bsValidator/language/es_ES',
-    'mod/User/js/userjs'
+    DIRMOD.'/'.$GLOBALS['clase'].'/js/userjs'
 ));
 
 //TODO eliminar hasta el final porque no hace falta
@@ -40,14 +40,11 @@ require_once(PATH . PROJECT . APP . "/mod/User/model/User_model.class.php");*/
 /*****************************************************/
 //TODO hasta aqui eliminar
 
-
-$GLOBALS["clase"] = "User";
 //vista principal a cargar
 include(MODULO . "/view/modules/" . $GLOBALS["clase"] . "module.php");
 
 //obtener el contenido de la pagina con el formulario popup
-//$profile = file_get_contents(MODULO . "/view/modules/" . $GLOBALS["clase"] . "form.php", FILE_USE_INCLUDE_PATH); //TODO eliminal
-$profile = file_get_contents(PATH.PROJECT.APP. "/tpl/modal_tpl.php", FILE_USE_INCLUDE_PATH);
+$profile = file_get_contents(PATH.PROJECT.APP. DIRTEMPLATE. "/modal_tpl.php", FILE_USE_INCLUDE_PATH);
 echo $profile;
 
 

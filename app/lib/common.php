@@ -26,7 +26,7 @@ $cfg = (object) parse_ini_file(PATH.'/geres/app/cfg/config_global.ini',true);
 define ("PROJECT", $cfg->app['project'] );//directorio del proyecto;
 define("APP",$cfg->app['app']);  //directorio de la aplicacion
 define("DIRMOD",$cfg->app['mod']);  //directorio de la aplicacion
-
+define("DIRTEMPLATE", $cfg->app['dirTemplate']);    //directorio de plantillas
 
 
 $aCarpetas = explode(',',$cfg->app['classCommon']);
