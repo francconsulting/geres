@@ -360,7 +360,7 @@ class Sesion
     /**
      * Obtener la cookie pasada por paramentro
      * @param $sCookie nombre de la cookie
-     * @return null  valor de la cookie
+         * @return null  valor de la cookie
      */
     public static function getCookie($sCookie)
     {

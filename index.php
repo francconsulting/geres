@@ -33,9 +33,9 @@ if(isset($_POST['accion'])){
     if ($accion=='acceder'){
 
         $login = new login_controller();
-        $result = $login->getLogeadoDataUser(); //comprobar el usuario del formulario en la bd
+        $result = $login->getLogeadoDataUser(); //comprobar el residente del formulario en la bd
 
-        $msg ='usuario o password incorrectos';
+        $msg ='residente o password incorrectos';
 
         if(!isset( $_SESSION['signIn'])) {  //si no esta establecida la sesion establecerla
             $_SESSION['signIn'] = $login->getLogeadoStatus();  //obtener el estado de logeo  True o False
@@ -63,11 +63,11 @@ if(isset($_POST['accion'])){
             }
             echo json_encode($result);  //devolver el array result en formato json
 
-        }else{ //si no hay usuario en la bd
+        }else{ //si no hay residente en la bd
             array_push($result, $result['logado']=false,$result['msg']=$msg);     //añadir al principio del array result estado y mensaje
             echo json_encode($result); //devolver el array result en formato json
         }
-    //cuando se implemente el poder registrarse el propio usuario  si no esta dado de alta en la bd
+    //cuando se implemente el poder registrarse el propio residente  si no esta dado de alta en la bd
     }else if($accion=='registrar') {
         echo json_encode(array(True,"Redirigiendo al registro"));
     }

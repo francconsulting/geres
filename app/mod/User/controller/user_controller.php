@@ -7,7 +7,6 @@
  */
 //Control para evitar ejecutar el script directamente
 if(empty(defined("DIRMOD"))){ echo "No está permitida la ejecucion del script";}
-
 //Setear en la variable el Nombre de la clase
 $GLOBALS["clase"] = ucfirst(str_replace("_controller","",basename(__FILE__,".php")));
 

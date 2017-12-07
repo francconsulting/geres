@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\app",
+    "\\app\\mod",
+    "\\app\\mod\\Residentes",
+    "\\app\\mod\\Residentes\\controller",
+    "\\app\\mod\\Residentes\\model"
+  ],
+  "SelectedNode": "\\app\\mod\\Residentes\\model\\User.class.php",
+  "PreviewInSolutionExplorer": false
+}
