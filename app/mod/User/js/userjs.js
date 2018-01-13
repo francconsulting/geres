@@ -2,26 +2,13 @@
  * Created by fmbv on 24/08/2017.
  */
 
+//definicion de variables
+var inputDesactivo,
+    tabla,
+     ruta;
+
 $(document).ready(function () {
-alert(document.cookie);
-
-    function getCookie(nombre){
-        let aCookies = decodeURIComponent(document.cookie).split(";");
-        let  signoIgual, sNombreCook, sValorCook = null;
-        for (var i = 0; i < aCookies.length; i++) {
-            signoIgual = aCookies[i].indexOf("=");
-            sNombreCook = aCookies[i].substr(0,signoIgual);
-            alert("array "+i+" "+sNombreCook+ " "+nombre);
-            if (sNombreCook == nombre) {
-                sValorCook = aCookies[i].substr(signoIgual + 1);
-                //  alert("array "+sValorCook);
-            }
-
-        }
-        return sValorCook;
-    }
-
-    ruta = ".\\"+dataDecryp(getCookie("PATHMOD"))
+    ruta = "."+dataDecryp(getCookie("PATHMOD"))
     /**
      * Funcionalidad en el boton cerrar cuando se hace click
      */
@@ -48,13 +35,10 @@ alert(document.cookie);
 
     //Inicializar la tabla con los datos
     Table();
-    console.log("ruta: ", ruta)
 });
 
-//definicion de variables
-var inputDesactivo,
-    tabla;
-var ruta
+
+
 
 /**
  * Añade funcionalidad al boton ver de la tabla
