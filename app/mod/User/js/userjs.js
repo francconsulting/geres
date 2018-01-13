@@ -8,7 +8,9 @@ var inputDesactivo,
      ruta;
 
 $(document).ready(function () {
-    ruta = "."+dataDecryp(getCookie("PATHMOD"))
+
+    ruta = "."+dataDecryp(getCookie("PATHMOD")) //Obtener la ruta del modulo
+
     /**
      * Funcionalidad en el boton cerrar cuando se hace click
      */
@@ -209,23 +211,32 @@ function borrar(datos) {
         'idUser': datos.idUser,
         'accion': 'del'
     }
-    ventanaModal();
-    $(".modal-title").html("Borrar usuario");                       //añadir titulo a ventana modal
-    $(".modal-title").parent("div").addClass('alert alert-error');  //añadir la clase
-    //añadir el contenido
-    $("#contenidoModal").html("Debes confirmar la eliminacion del usuario, <strong>" + datos.sNombre + " " + datos.sApellidos + "</strong>");
-    $(".modal-footer").append("<button id='btnEliminar' type='button' class='btn btn-danger'>Eliminar</button>") //añadir el boton de eliminar
+    callAjax("./app/mod/Sesion/controller/sesion_datos.php", function (result) {    //comprobar sui esta activa la sesion
+        //  console.log("precallback: "+!result.signIn);
+        if (!result.signIn) {  //control de sesion, si no esta activa la sesion se envia al indice
+            alert('La sesion ha caducado')
+            $(location).attr('href', 'index.php');
+        }else{
+            ventanaModal();
+            $(".modal-title").html("Borrar usuario");                       //añadir titulo a ventana modal
+            $(".modal-title").parent("div").addClass('alert alert-error');  //añadir la clase
+            //añadir el contenido
+            $("#contenidoModal").html("Debes confirmar la eliminacion del usuario, <strong>" + datos.sNombre + " " + datos.sApellidos + "</strong>");
+            $(".modal-footer").append("<button id='btnEliminar' type='button' class='btn btn-danger'>Eliminar</button>") //añadir el boton de eliminar
 
-    $("#btnEliminar").on('click', function () {           //funcionalidad del boton eliminar
-        callAjax("./app/mod/User/controller/user_datos.php", function (result) {       //eliminar de la tabla el id
-                tabla.ajax.reload(null, false);         //actualizar la tabla
-                $("#ventanaModal").modal('hide');       //ocultar la ventana modal
-                $(".modal-title").parent("div").removeClass('alert alert-error');   //quitar la clase a la ventana modal
-                $("#btnEliminar").remove();             //quitar el boton de eliminar
-            }
-            , param, "POST", "json");
+            $("#btnEliminar").on('click', function () {           //funcionalidad del boton eliminar
+                callAjax(ruta + "/controller/user_datos.php", function (result) {       //eliminar de la tabla el id
+                        tabla.ajax.reload(null, false);         //actualizar la tabla
+                        $("#ventanaModal").modal('hide');       //ocultar la ventana modal
+                        $(".modal-title").parent("div").removeClass('alert alert-error');   //quitar la clase a la ventana modal
+                        $("#btnEliminar").remove();             //quitar el boton de eliminar
+                    }
+                    , param, "POST", "json");
 
+            });
+        }
     });
+
 }
 
 
@@ -236,15 +247,6 @@ function ventanaModal() {
     $("#ventanaModal").modal({backdrop: "static"});
 }
 
-/**
- * Evitar el envio del formulario pasado por parametros
- * @param idForm    Id del formulario
- */
-function noSubmit(idForm) {
-    $("#" + idForm).submit(function (evt) {
-        evt.preventDefault();
-    });
-}
 
 /**
  * Capturar los datos para mostrarlos en
@@ -255,22 +257,6 @@ function ver(datos) {
     getDatos(datos);    //pasar los datos al formulario
 }
 
-/**
- * Capturar todos los elementos del formulario para
- * almacenarlos en un objeto. Se pasa como parametro
- * el id del formulario y los tipos de elementos a capturar.
- * P.Ej. getElementForm('#myForm input');
- * @param formulario   idFormulario
- * @returns {Object}
- */
-function getElementForm(formulario) {
-    var datos = new Object();
-    $(formulario).each(function (index, element) {
-        //console.log(index+ "  "+ element.id+" : " +element.value);        // nombre = eval(element.id);
-        datos[element.id] = element.value;
-    });
-    return datos;
-}
 
 /**
  * Actualiza los datos del objeto que se envia por parametros
@@ -278,7 +264,7 @@ function getElementForm(formulario) {
  */
 function actualizar(datos) {
     var bUpdate = false,
-        nuevosDatos = getElementForm('#profile input'),
+        nuevosDatos = getElementForm('#profile input'), //capura de todos los elementos del formulario
         param = new Object();
     //  console.log(nuevosDatos);     console.log(datos);
 
@@ -325,7 +311,7 @@ function actualizar(datos) {
  */
 function newProfile() {
     //Cargar pagina en ventana con Ajax
-    return callAjax("./app/mod/User/view/modules/profile.php", function (result) {
+    return callAjax(ruta + "/view/modules/profile.php", function (result) {
         noSubmit('profile');                //evita el envio de formulario
         $("#contenidoModal").html(result);  //carga el html en el ventan modal
         $("#sNombre").keyup(function () {
@@ -679,7 +665,7 @@ function previewFile(inputFile) {
 
 
 /**
- *
+ * Permite el upload de un archivo en el servidor
  * @returns {boolean}
  */
 function cargarArchivo() {
@@ -693,14 +679,14 @@ function cargarArchivo() {
         if (isImage(fileExt) && pesoImagen(fileSize)) {
 
 
-            var formData = new FormData(document.getElementById('profile'));
-            formData.append('accion', 'upload');
+            var formData = new FormData(document.getElementById('profile')); //crear un nuevo formulario recuperndo el formulario pasado por parametros
+            formData.append('accion', 'upload'); //añadir al campo accion  el valor upload
 
 
             console.log(formData);
             uploadAjax('./app/mod/User/controller/user_datos.php', function (result) {
                 // alert('fin');
-                console.log(result.exito);
+               // console.log(result.exito);
                 /* var dataImg = result;
                  $("#avatar").attr("src",dataImg.avatar);
                  $("#avatar").width(100);
@@ -708,6 +694,7 @@ function cargarArchivo() {
                 if (result.exito) {
                     $("#ventanaModal").modal('hide');
                     tabla.ajax.reload(null, false);
+                    return true;
                 }
 
             }, formData);

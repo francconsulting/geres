@@ -15,6 +15,17 @@ function cambiarTitulo(titulo){
 }
 
 /**
+ * Evitar el envio del formulario pasado por parametros
+ * @param idForm    Id del formulario
+ */
+function noSubmit(idForm) {
+    $("#" + idForm).submit(function (evt) {
+        evt.preventDefault();
+    });
+}
+
+
+/**
  * envio de formulario con js
  * @param formulario
  * @param url
@@ -24,6 +35,25 @@ function enviarForm(formulario, url){
     //$("#"+form).submit();  //TODO ->no funciona ??
     document[formulario].submit();
 }
+
+/**
+ * Capturar todos los elementos del formulario para
+ * almacenarlos en un objeto. Se pasa como parametro
+ * el id del formulario y los tipos de elementos a capturar.
+ * P.Ej. getElementForm('#myForm input');
+ * @param formulario   idFormulario
+ * @returns {Object}
+ */
+function getElementForm(formulario) {
+    var datos = new Object();
+    $(formulario).each(function (index, element) {
+        //console.log(index+ "  "+ element.id+" : " +element.value);        // nombre = eval(element.id);
+        datos[element.id] = element.value;
+    });
+    return datos;
+}
+
+
 
 var menu = function (){
     $(".sidebar-menu a").on('click', function(evt){
@@ -35,6 +65,12 @@ var menu = function (){
     })
 }
 
+
+/**
+ * Obtener las cookie que coincida con el nombre pasado por parametros
+ * @param nombre String Nombre de la cookie
+ * @returns {*} Valor de la cookie
+ */
 function getCookie(nombre){
     var aCookies = decodeURIComponent(document.cookie).split(";");
     var  signoIgual, sNombreCook, sValorCook = null;
