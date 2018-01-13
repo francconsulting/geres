@@ -15,6 +15,7 @@
 
 $GLOBALS["clase"] = "User";
 setcookie('COOKIE-SESION',md5(APP.DIRMOD.$GLOBALS["clase"]),-1,'/');
+setCookie('PATHMOD',Crypto::cryptoJsAesEncrypt('', 'holaa'));
 // cargar los css y js generales necesarios para el funcionamiento del módulo
 echo Helper::getCss(array('common', 'js/jQuery-File-Upload/css'));
 echo Helper::getJs(array(
@@ -23,7 +24,9 @@ echo Helper::getJs(array(
     'js/func_async',
     'js/bsValidator/bootstrapValidator.min',
     'js/bsValidator/language/es_ES',
-    DIRMOD.'/'.$GLOBALS['clase'].'/js/userjs'
+    DIRMOD.'/'.$GLOBALS['clase'].'/js/userjs',
+    'js/cryptojs-aes-php-js/aes',
+    'js/cryptojs-aes-php-js/aes-json-format'
 ));
 
 //TODO eliminar hasta el final porque no hace falta

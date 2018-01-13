@@ -20,6 +20,8 @@ alert(document.cookie);
         }
         return sValorCook;
     }
+    console.log(getCookie("PATHMOD"))
+    //console.log(dataDecryp(getCookie("PATHMOD")))
     /**
      * Funcionalidad en el boton cerrar cuando se hace click
      */
@@ -265,9 +267,7 @@ function noSubmit(idForm) {
  */
 function ver(datos) {
     //console.log(datos);
-    ventanaModal();     //abrir ventana modal
     getDatos(datos);    //pasar los datos al formulario
-
 }
 
 /**
@@ -405,90 +405,100 @@ function toggleAvatar() {
  * @returns {String} Contenido HTML a mostrar en la ventana modal
  */
 function getDatos(datos) {
-    //Cargar con Ajax el contenido HTML en la ventana modal
-    return callAjax("./app/mod/User/view/modules/profile.php", function (result) {
-            //console.log(datos);
-            $("#contenidoModal").html(result);              //cargar el HTML en el div
-            noSubmit('profile');   //evitar el envio del formulario
 
-            //Cargar los datos en el formualrio
-            $("#NombrePerfil").html(datos.sNombre);
-            $("#ApellidosPerfil").html(datos.sApellidos);
+   callAjax('./app/mod/Sesion/controller/sesion_datos.php', function (result) {
+       if (!result.signIn){
+           alert('La sesion ha caducado');
+           $(location).attr('href', 'index.php');
+       }else{
+           ventanaModal();     //abrir ventana modal
+           //Cargar con Ajax el contenido HTML en la ventana modal
+           return callAjax("./app/mod/User/view/modules/profile.php", function (result) {
+                   //console.log(datos);
+                   $("#contenidoModal").html(result);              //cargar el HTML en el div
+                   noSubmit('profile');   //evitar el envio del formulario
 
-            var avatar = '',
-                genero = '';
+                   //Cargar los datos en el formualrio
+                   $("#NombrePerfil").html(datos.sNombre);
+                   $("#ApellidosPerfil").html(datos.sApellidos);
 
-            (datos.cGenero == '') ? genero = 'M' : genero = datos.cGenero;
+                   var avatar = '',
+                       genero = '';
 
-            if (datos.sAvatar == null) {
-                (genero == 'H') ? avatar = 'avatar_h1.svg' : avatar = 'avatar_m1.svg';
-            } else {
-                avatar = datos.sAvatar;
-            }
-            $("#avatar").attr("src", "./app/images/avatar/" + avatar);
-            $("#avatar").width(100);
-            $("#avatar").height(100);
-            $("#sAvatar").val(avatar);
-            $("#cGenero").val(genero);
-            $("#idUser").val(datos.idUser);
-            $("#sNombre").val(datos.sNombre);
-            $("#sApellidos").val(datos.sApellidos);
+                   (datos.cGenero == '') ? genero = 'M' : genero = datos.cGenero;
 
-            var rol = datos.aRol.replace(" ", "").split(",");   //guardar los valores de la Cadena aRol en el array rol
-            var arrayRol = [];
-            rol.forEach(function (element) {
-                $("[name=aRolAux]").each(function (index) {
-                    if ($("[name=aRolAux]")[index].value == element) {  //Comparar si el elemento marcado ya estaba marcado o no para tenerlo disponeble para el POST
-                        arrayRol.push($("[name=aRolAux]")[index].value);
-                    }
-                });
-            });
+                   if (datos.sAvatar == null) {
+                       (genero == 'H') ? avatar = 'avatar_h1.svg' : avatar = 'avatar_m1.svg';
+                   } else {
+                       avatar = datos.sAvatar;
+                   }
+                   $("#avatar").attr("src", "./app/images/avatar/" + avatar);
+                   $("#avatar").width(100);
+                   $("#avatar").height(100);
+                   $("#sAvatar").val(avatar);
+                   $("#cGenero").val(genero);
+                   $("#idUser").val(datos.idUser);
+                   $("#sNombre").val(datos.sNombre);
+                   $("#sApellidos").val(datos.sApellidos);
 
-            //Establecer el check del genero a marcar en la carga del formulario según los datos de la tabla
-            if (genero == 'H') {
-                $("#cGeneroH").prop('checked', true);
-            } else {
-                $("#cGeneroM").prop('checked', true);
-            }
+                   var rol = datos.aRol.replace(" ", "").split(",");   //guardar los valores de la Cadena aRol en el array rol
+                   var arrayRol = [];
+                   rol.forEach(function (element) {
+                       $("[name=aRolAux]").each(function (index) {
+                           if ($("[name=aRolAux]")[index].value == element) {  //Comparar si el elemento marcado ya estaba marcado o no para tenerlo disponeble para el POST
+                               arrayRol.push($("[name=aRolAux]")[index].value);
+                           }
+                       });
+                   });
 
-            $("#sEmail").val(datos.sEmail);
-            $("#aRol").val(datos.aRol);
-            $("#sTelefono1").val(datos.sTelefono1);
-            $("#sTelefono2").val(datos.sTelefono2);
-            $("#sDireccion").val(datos.sDireccion);
-            $("#sCodigoPostal").val(datos.sCodigoPostal);
-            $("#auditoria").html("Actualizado: " + datos.dtU);
+                   //Establecer el check del genero a marcar en la carga del formulario según los datos de la tabla
+                   if (genero == 'H') {
+                       $("#cGeneroH").prop('checked', true);
+                   } else {
+                       $("#cGeneroM").prop('checked', true);
+                   }
 
-
-            $("#btnGuardar").hide();   //TODO quitar el boton de guardar cambios?????
-
-            //Cuando es solo visualizar los datos en el formulario
-            if (inputDesactivo) {
-                $("#btnActualizar").hide();                     //ocultar el boton de actualizar
-                $("#fAvatar").closest('.form-group').hide();    //ocultar el boton de carga del avatar
-            }
-
-            $("form input").attr("disabled", inputDesactivo);  //habilitar o desabilitar los campos del formulario
-
-            //almacenar-actualizar los valores del rol en un array segun se marquen o desmarquen
-            $("[name=aRolAux]:checkbox").on('change', function () {
-                if ($(this).is(':checked')) {
-                    arrayRol.push($(this).val());                   //si se marca arradir al array
-                } else {
-                    var indice = arrayRol.indexOf($(this).val());    //buscar el indice en el array del elemento desmarcado
-                    arrayRol.splice(indice, 1);                       //eliminar elemento
-                }
-                arrayRol.sort()                                     //ordenar el array
-                $("#aRol").val(arrayRol);                           //almacenar los valores en un elemento del formulario
-            });
+                   $("#sEmail").val(datos.sEmail);
+                   $("#aRol").val(datos.aRol);
+                   $("#sTelefono1").val(datos.sTelefono1);
+                   $("#sTelefono2").val(datos.sTelefono2);
+                   $("#sDireccion").val(datos.sDireccion);
+                   $("#sCodigoPostal").val(datos.sCodigoPostal);
+                   $("#auditoria").html("Actualizado: " + datos.dtU);
 
 
-            toggleAvatar();  //canbiar la imagen del avatar
-            bvValidarForm(datos);  //comprobaciones de validacion del formulario
+                   $("#btnGuardar").hide();   //TODO quitar el boton de guardar cambios?????
 
-        }, null,
-        "POST",
-        "HTML");
+                   //Cuando es solo visualizar los datos en el formulario
+                   if (inputDesactivo) {
+                       $("#btnActualizar").hide();                     //ocultar el boton de actualizar
+                       $("#fAvatar").closest('.form-group').hide();    //ocultar el boton de carga del avatar
+                   }
+
+                   $("form input").attr("disabled", inputDesactivo);  //habilitar o desabilitar los campos del formulario
+
+                   //almacenar-actualizar los valores del rol en un array segun se marquen o desmarquen
+                   $("[name=aRolAux]:checkbox").on('change', function () {
+                       if ($(this).is(':checked')) {
+                           arrayRol.push($(this).val());                   //si se marca arradir al array
+                       } else {
+                           var indice = arrayRol.indexOf($(this).val());    //buscar el indice en el array del elemento desmarcado
+                           arrayRol.splice(indice, 1);                       //eliminar elemento
+                       }
+                       arrayRol.sort()                                     //ordenar el array
+                       $("#aRol").val(arrayRol);                           //almacenar los valores en un elemento del formulario
+                   });
+
+
+                   toggleAvatar();  //canbiar la imagen del avatar
+                   bvValidarForm(datos);  //comprobaciones de validacion del formulario
+
+               }, null,
+               "POST",
+               "HTML");
+       }
+    })
+
 }
 
 
