@@ -14,7 +14,7 @@
 //require_once (PATH.'/geres/app/lib/common.php'); //TODO quitado tenporalmente
 
 $GLOBALS["clase"] = "User";
-setcookie('COOKIE-SESION',md5(APP.DIRMOD.$GLOBALS["clase"]),-1,'/');
+//setcookie('COOKIE-SESION',md5(APP.DIRMOD.$GLOBALS["clase"]),-1,'/');
 setCookie('PATHMOD',Crypto::cryptoJsAesEncrypt('', APP.DIRMOD."\\".$GLOBALS["clase"]));
 // cargar los css y js generales necesarios para el funcionamiento del módulo
 echo Helper::getCss(array('common', 'js/jQuery-File-Upload/css'));
