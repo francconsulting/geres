@@ -310,6 +310,7 @@ function actualizar(datos) {
  * @returns {String} Contenido HTML a mostrar en la ventana
  */
 function newProfile() {
+    $(".modal-title").html("Añadir nuevo usuario");
     //Cargar pagina en ventana con Ajax
     return callAjax(ruta + "/view/modules/profile.php", function (result) {
         noSubmit('profile');                //evita el envio de formulario
