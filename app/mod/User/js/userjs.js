@@ -20,8 +20,8 @@ alert(document.cookie);
         }
         return sValorCook;
     }
-    console.log(getCookie("PATHMOD"))
-    //console.log(dataDecryp(getCookie("PATHMOD")))
+
+    ruta = ".\\"+dataDecryp(getCookie("PATHMOD"))
     /**
      * Funcionalidad en el boton cerrar cuando se hace click
      */
@@ -48,11 +48,13 @@ alert(document.cookie);
 
     //Inicializar la tabla con los datos
     Table();
+    console.log("ruta: ", ruta)
 });
 
 //definicion de variables
 var inputDesactivo,
     tabla;
+var ruta
 
 /**
  * Añade funcionalidad al boton ver de la tabla
@@ -404,7 +406,6 @@ function toggleAvatar() {
  * @returns {String} Contenido HTML a mostrar en la ventana modal
  */
 function getDatos(datos) {
-
    callAjax('./app/mod/Sesion/controller/sesion_datos.php', function (result) {
        if (!result.signIn){
            alert('La sesion ha caducado');
@@ -412,7 +413,8 @@ function getDatos(datos) {
        }else{
            ventanaModal();     //abrir ventana modal
            //Cargar con Ajax el contenido HTML en la ventana modal
-           return callAjax("./app/mod/User/view/modules/profile.php", function (result) {
+           //return callAjax("./app/mod/User/view/modules/profile.php", function (result) {
+           return callAjax( ruta + "/view/modules/profile.php", function (result) {
                    //console.log(datos);
                    $("#contenidoModal").html(result);              //cargar el HTML en el div
                    noSubmit('profile');   //evitar el envio del formulario
