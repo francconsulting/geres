@@ -266,7 +266,6 @@ function noSubmit(idForm) {
  * @param datos  Objeto con las propiedades a mostrar
  */
 function ver(datos) {
-    //console.log(datos);
     getDatos(datos);    //pasar los datos al formulario
 }
 
