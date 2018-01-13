@@ -34,3 +34,19 @@ var menu = function (){
         enviarForm("frmCuerpo","page.php"); //TODO -> descomentar
     })
 }
+
+function getCookie(nombre){
+    var aCookies = decodeURIComponent(document.cookie).split(";");
+    var  signoIgual, sNombreCook, sValorCook = null;
+    for (var i = 0; i < aCookies.length; i++) {
+        signoIgual = aCookies[i].indexOf("=");
+        sNombreCook = aCookies[i].substr(0,signoIgual);
+       // alert("array "+i+" "+sNombreCook+ " "+nombre);
+        if (sNombreCook == nombre) {
+            sValorCook = aCookies[i].substr(signoIgual + 1);
+            //  alert("array "+sValorCook);
+        }
+
+    }
+    return sValorCook;
+}
