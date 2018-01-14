@@ -653,7 +653,6 @@ $ultimo_acceso = date("d-m-Y H:i:s",strtotime($sesion->getDtUltimoAcceso()));
     $(document).ready(function () {
         cambiarTitulo('<?php echo $GLOBALS['clase']?>');
         menu();
-
     });
 
 </script>

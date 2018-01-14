@@ -5,17 +5,18 @@
 //definicion de variables
 var inputDesactivo,
     tabla,
-     ruta;
+    ruta;
 
 $(document).ready(function () {
-
-    ruta = "."+dataDecryp(getCookie("PATHMOD")) //Obtener la ruta del modulo
+    ruta = "." + dataDecryp(getCookie("PATHMOD")) //Obtener la ruta del modulo
 
     /**
      * Funcionalidad en el boton cerrar cuando se hace click
      */
     $("#btnCerrar, button.close").on("click", function () {
         $(".modal-title").parent("div").removeClass('alert alert-error');   //eliminar la clase alert
+        $(".modal-title").parent("div").removeClass('bg-light-blue-active');  //añadir la clase de cabecera azul
+        $(".modal-title").parent("div").removeClass('alert alert-success');  //añadir la clase
         $("#btnEliminar").remove();         //quitar el boton eliminar
     });
 
@@ -28,18 +29,21 @@ $(document).ready(function () {
     });
 
     //Añadir nuevo usuario
-    // $("#addUser").click(ver);
     $("#addUser").click(function () {
-        ventanaModal();
-        newProfile();
-
+        $(".modal-title").parent("div").addClass('alert alert-success');  //añadir la clase
+        callAjax('./app/mod/Sesion/controller/sesion_datos.php', function (results) {    //comprobar la sesion si esta activa
+            if (!results.signIn) {
+                ventanafinSesion()
+            } else {
+                ventanaModal();
+                newProfile();
+            }
+        })
     });
 
     //Inicializar la tabla con los datos
     Table();
 });
-
-
 
 
 /**
@@ -214,9 +218,8 @@ function borrar(datos) {
     callAjax("./app/mod/Sesion/controller/sesion_datos.php", function (result) {    //comprobar sui esta activa la sesion
         //  console.log("precallback: "+!result.signIn);
         if (!result.signIn) {  //control de sesion, si no esta activa la sesion se envia al indice
-            alert('La sesion ha caducado')
-            $(location).attr('href', 'index.php');
-        }else{
+            ventanafinSesion()
+        } else {
             ventanaModal();
             $(".modal-title").html("Borrar usuario");                       //añadir titulo a ventana modal
             $(".modal-title").parent("div").addClass('alert alert-error');  //añadir la clase
@@ -226,10 +229,19 @@ function borrar(datos) {
 
             $("#btnEliminar").on('click', function () {           //funcionalidad del boton eliminar
                 callAjax(ruta + "/controller/user_datos.php", function (result) {       //eliminar de la tabla el id
-                        tabla.ajax.reload(null, false);         //actualizar la tabla
-                        $("#ventanaModal").modal('hide');       //ocultar la ventana modal
-                        $(".modal-title").parent("div").removeClass('alert alert-error');   //quitar la clase a la ventana modal
-                        $("#btnEliminar").remove();             //quitar el boton de eliminar
+                        console.log(result)
+                        if (result.signIn && result.exito) {        //si la sesion esta activa y se ha actualizado correctamente
+                            tabla.ajax.reload(null, false);         //actualizar la tabla
+                            $("#ventanaModal").modal('hide');       //ocultar la ventana modal
+                            $(".modal-title").parent("div").removeClass('alert alert-error');   //quitar la clase a la ventana modal
+                            $("#btnEliminar").remove();             //quitar el boton de eliminar
+                        } else if (result.signIn) {
+                            alert('No se han podido eliminar los datos');
+                            $("#ventanaModal").modal('hide');
+                        } else {
+                            $("#btnEliminar").remove();
+                            ventanafinSesion()
+                        }
                     }
                     , param, "POST", "json");
 
@@ -237,14 +249,6 @@ function borrar(datos) {
         }
     });
 
-}
-
-
-/**
- *  Abrir la ventana modal
- */
-function ventanaModal() {
-    $("#ventanaModal").modal({backdrop: "static"});
 }
 
 
@@ -263,6 +267,7 @@ function ver(datos) {
  * @param datos Objeto con las propiedades a actualizar
  */
 function actualizar(datos) {
+
     var bUpdate = false,
         nuevosDatos = getElementForm('#profile input'), //capura de todos los elementos del formulario
         param = new Object();
@@ -296,8 +301,7 @@ function actualizar(datos) {
                     alert('No se han podido actualizar los datos');
                     $("#ventanaModal").modal('hide');
                 } else {                 //si no continua la sesion activa
-                    alert('La sesion ha caducado');
-                    $(location).attr('href', 'index.php');
+                    ventanafinSesion()
                 }
             }
         }, param, "POST", "json");
@@ -310,11 +314,14 @@ function actualizar(datos) {
  * @returns {String} Contenido HTML a mostrar en la ventana
  */
 function newProfile() {
+    $(".modal-title").parent("div").addClass('bg-light-green-active');  //añadir la clase de cabecera azul
     $(".modal-title").html("Añadir nuevo usuario");
     //Cargar pagina en ventana con Ajax
     return callAjax(ruta + "/view/modules/profile.php", function (result) {
         noSubmit('profile');                //evita el envio de formulario
+
         $("#contenidoModal").html(result);  //carga el html en el ventan modal
+
         $("#sNombre").keyup(function () {
             $("#NombrePerfil").html($("#sNombre").val());
         });
@@ -377,98 +384,98 @@ function toggleAvatar() {
  * @returns {String} Contenido HTML a mostrar en la ventana modal
  */
 function getDatos(datos) {
-   callAjax('./app/mod/Sesion/controller/sesion_datos.php', function (result) {
-       if (!result.signIn){
-           alert('La sesion ha caducado');
-           $(location).attr('href', 'index.php');
-       }else{
-           ventanaModal();     //abrir ventana modal
-           //Cargar con Ajax el contenido HTML en la ventana modal
-           //return callAjax("./app/mod/User/view/modules/profile.php", function (result) {
-           return callAjax( ruta + "/view/modules/profile.php", function (result) {
-                   //console.log(datos);
-                   $("#contenidoModal").html(result);              //cargar el HTML en el div
-                   noSubmit('profile');   //evitar el envio del formulario
+    callAjax('./app/mod/Sesion/controller/sesion_datos.php', function (result) {
+        if (!result.signIn) {
+            ventanafinSesion()
+        } else {
+            $(".modal-title").parent("div").addClass('bg-light-blue-active');  //añadir la clase de cabecera azul
+            ventanaModal();     //abrir ventana modal
+            //Cargar con Ajax el contenido HTML en la ventana modal
+            //return callAjax("./app/mod/User/view/modules/profile.php", function (result) {
+            return callAjax(ruta + "/view/modules/profile.php", function (result) {
+                    //console.log(datos);
+                    $("#contenidoModal").html(result);              //cargar el HTML en el div
+                    noSubmit('profile');   //evitar el envio del formulario
 
-                   //Cargar los datos en el formualrio
-                   $("#NombrePerfil").html(datos.sNombre);
-                   $("#ApellidosPerfil").html(datos.sApellidos);
+                    //Cargar los datos en el formualrio
+                    $("#NombrePerfil").html(datos.sNombre);
+                    $("#ApellidosPerfil").html(datos.sApellidos);
 
-                   var avatar = '',
-                       genero = '';
+                    var avatar = '',
+                        genero = '';
 
-                   (datos.cGenero == '') ? genero = 'M' : genero = datos.cGenero;
+                    (datos.cGenero == '') ? genero = 'M' : genero = datos.cGenero;
 
-                   if (datos.sAvatar == null) {
-                       (genero == 'H') ? avatar = 'avatar_h1.svg' : avatar = 'avatar_m1.svg';
-                   } else {
-                       avatar = datos.sAvatar;
-                   }
-                   $("#avatar").attr("src", "./app/images/avatar/" + avatar);
-                   $("#avatar").width(100);
-                   $("#avatar").height(100);
-                   $("#sAvatar").val(avatar);
-                   $("#cGenero").val(genero);
-                   $("#idUser").val(datos.idUser);
-                   $("#sNombre").val(datos.sNombre);
-                   $("#sApellidos").val(datos.sApellidos);
+                    if (datos.sAvatar == null) {
+                        (genero == 'H') ? avatar = 'avatar_h1.svg' : avatar = 'avatar_m1.svg';
+                    } else {
+                        avatar = datos.sAvatar;
+                    }
+                    $("#avatar").attr("src", "./app/images/avatar/" + avatar);
+                    $("#avatar").width(100);
+                    $("#avatar").height(100);
+                    $("#sAvatar").val(avatar);
+                    $("#cGenero").val(genero);
+                    $("#idUser").val(datos.idUser);
+                    $("#sNombre").val(datos.sNombre);
+                    $("#sApellidos").val(datos.sApellidos);
 
-                   var rol = datos.aRol.replace(" ", "").split(",");   //guardar los valores de la Cadena aRol en el array rol
-                   var arrayRol = [];
-                   rol.forEach(function (element) {
-                       $("[name=aRolAux]").each(function (index) {
-                           if ($("[name=aRolAux]")[index].value == element) {  //Comparar si el elemento marcado ya estaba marcado o no para tenerlo disponeble para el POST
-                               arrayRol.push($("[name=aRolAux]")[index].value);
-                           }
-                       });
-                   });
+                    var rol = datos.aRol.replace(" ", "").split(",");   //guardar los valores de la Cadena aRol en el array rol
+                    var arrayRol = [];
+                    rol.forEach(function (element) {
+                        $("[name=aRolAux]").each(function (index) {
+                            if ($("[name=aRolAux]")[index].value == element) {  //Comparar si el elemento marcado ya estaba marcado o no para tenerlo disponeble para el POST
+                                arrayRol.push($("[name=aRolAux]")[index].value);
+                            }
+                        });
+                    });
 
-                   //Establecer el check del genero a marcar en la carga del formulario según los datos de la tabla
-                   if (genero == 'H') {
-                       $("#cGeneroH").prop('checked', true);
-                   } else {
-                       $("#cGeneroM").prop('checked', true);
-                   }
+                    //Establecer el check del genero a marcar en la carga del formulario según los datos de la tabla
+                    if (genero == 'H') {
+                        $("#cGeneroH").prop('checked', true);
+                    } else {
+                        $("#cGeneroM").prop('checked', true);
+                    }
 
-                   $("#sEmail").val(datos.sEmail);
-                   $("#aRol").val(datos.aRol);
-                   $("#sTelefono1").val(datos.sTelefono1);
-                   $("#sTelefono2").val(datos.sTelefono2);
-                   $("#sDireccion").val(datos.sDireccion);
-                   $("#sCodigoPostal").val(datos.sCodigoPostal);
-                   $("#auditoria").html("Actualizado: " + datos.dtU);
-
-
-                   $("#btnGuardar").hide();   //TODO quitar el boton de guardar cambios?????
-
-                   //Cuando es solo visualizar los datos en el formulario
-                   if (inputDesactivo) {
-                       $("#btnActualizar").hide();                     //ocultar el boton de actualizar
-                       $("#fAvatar").closest('.form-group').hide();    //ocultar el boton de carga del avatar
-                   }
-
-                   $("form input").attr("disabled", inputDesactivo);  //habilitar o desabilitar los campos del formulario
-
-                   //almacenar-actualizar los valores del rol en un array segun se marquen o desmarquen
-                   $("[name=aRolAux]:checkbox").on('change', function () {
-                       if ($(this).is(':checked')) {
-                           arrayRol.push($(this).val());                   //si se marca arradir al array
-                       } else {
-                           var indice = arrayRol.indexOf($(this).val());    //buscar el indice en el array del elemento desmarcado
-                           arrayRol.splice(indice, 1);                       //eliminar elemento
-                       }
-                       arrayRol.sort()                                     //ordenar el array
-                       $("#aRol").val(arrayRol);                           //almacenar los valores en un elemento del formulario
-                   });
+                    $("#sEmail").val(datos.sEmail);
+                    $("#aRol").val(datos.aRol);
+                    $("#sTelefono1").val(datos.sTelefono1);
+                    $("#sTelefono2").val(datos.sTelefono2);
+                    $("#sDireccion").val(datos.sDireccion);
+                    $("#sCodigoPostal").val(datos.sCodigoPostal);
+                    $("#auditoria").html("Actualizado: " + datos.dtU);
 
 
-                   toggleAvatar();  //canbiar la imagen del avatar
-                   bvValidarForm(datos);  //comprobaciones de validacion del formulario
+                    $("#btnGuardar").hide();   //TODO quitar el boton de guardar cambios?????
 
-               }, null,
-               "POST",
-               "HTML");
-       }
+                    //Cuando es solo visualizar los datos en el formulario
+                    if (inputDesactivo) {
+                        $("#btnActualizar").hide();                     //ocultar el boton de actualizar
+                        $("#fAvatar").closest('.form-group').hide();    //ocultar el boton de carga del avatar
+                    }
+
+                    $("form input").attr("disabled", inputDesactivo);  //habilitar o desabilitar los campos del formulario
+
+                    //almacenar-actualizar los valores del rol en un array segun se marquen o desmarquen
+                    $("[name=aRolAux]:checkbox").on('change', function () {
+                        if ($(this).is(':checked')) {
+                            arrayRol.push($(this).val());                   //si se marca arradir al array
+                        } else {
+                            var indice = arrayRol.indexOf($(this).val());    //buscar el indice en el array del elemento desmarcado
+                            arrayRol.splice(indice, 1);                       //eliminar elemento
+                        }
+                        arrayRol.sort()                                     //ordenar el array
+                        $("#aRol").val(arrayRol);                           //almacenar los valores en un elemento del formulario
+                    });
+
+
+                    toggleAvatar();  //canbiar la imagen del avatar
+                    bvValidarForm(datos);  //comprobaciones de validacion del formulario
+
+                }, null,
+                "POST",
+                "HTML");
+        }
     })
 
 }
@@ -620,7 +627,7 @@ function moverIconoBv(nameField) {
 
 function previewFile(inputFile) {
     var file = $("#fAvatar")[0].files[0];
-        fileName = file.name,                                           //nombre
+    fileName = file.name,                                           //nombre
         fileExt = fileName.substring(fileName.lastIndexOf('.') + 1),      //extension
         fileSize = file.size,                                           //tamaño
         fileType = file.type;                                           //tipo
@@ -687,7 +694,7 @@ function cargarArchivo() {
             console.log(formData);
             uploadAjax('./app/mod/User/controller/user_datos.php', function (result) {
                 // alert('fin');
-               // console.log(result.exito);
+                // console.log(result.exito);
                 /* var dataImg = result;
                  $("#avatar").attr("src",dataImg.avatar);
                  $("#avatar").width(100);

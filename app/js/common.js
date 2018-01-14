@@ -9,9 +9,8 @@
 */
 
 
-
-function cambiarTitulo(titulo){
-    $("title")[0].innerHTML=titulo;
+function cambiarTitulo(titulo) {
+    $("title")[0].innerHTML = titulo;
 }
 
 /**
@@ -30,8 +29,8 @@ function noSubmit(idForm) {
  * @param formulario
  * @param url
  */
-function enviarForm(formulario, url){
-    $("#"+formulario).attr("action",url);
+function enviarForm(formulario, url) {
+    $("#" + formulario).attr("action", url);
     //$("#"+form).submit();  //TODO ->no funciona ??
     document[formulario].submit();
 }
@@ -53,15 +52,36 @@ function getElementForm(formulario) {
     return datos;
 }
 
+/**
+ *  Abrir la ventana modal
+ */
+function ventanaModal() {
+    $("#ventanaModal").modal({backdrop: "static"});
+}
 
+/**
+ * Ventana modal que se muestra cuando finaliza la sesion.
+ * La ventana redirige al formulario de login
+ */
+function ventanafinSesion() {
+    ventanaModal();
+    $(".modal-title").html("Información de Sesion");                       //añadir titulo a ventana modal
+    $(".modal-title").parent("div").addClass('alert alert-warning ');  //añadir la clase
+    $("#btnCerrar").removeClass('btn-default')
+    $("#btnCerrar").addClass('btn-warning')
+    $("#contenidoModal").html("Su sesión ha caducado. Deberá logarse de nuevo.");
+    $("#btnCerrar, button.close").on('click', function () {
+            $(location).attr('href', 'index.php');
+    });
+}
 
-var menu = function (){
-    $(".sidebar-menu a").on('click', function(evt){
-       console.log($(this).data().modulo.toUpperCase());
-       $("#hmod").val($(this).data().modulo);
+var menu = function () {
+    $(".sidebar-menu a").on('click', function (evt) {
+        console.log($(this).data().modulo.toUpperCase());
+        $("#hmod").val($(this).data().modulo);
         evt.preventDefault();
 
-        enviarForm("frmCuerpo","page.php"); //TODO -> descomentar
+        enviarForm("frmCuerpo", "page.php"); //TODO -> descomentar
     })
 }
 
@@ -71,13 +91,13 @@ var menu = function (){
  * @param nombre String Nombre de la cookie
  * @returns {*} Valor de la cookie
  */
-function getCookie(nombre){
+function getCookie(nombre) {
     var aCookies = decodeURIComponent(document.cookie).split(";");
-    var  signoIgual, sNombreCook, sValorCook = null;
+    var signoIgual, sNombreCook, sValorCook = null;
     for (var i = 0; i < aCookies.length; i++) {
         signoIgual = aCookies[i].indexOf("=");
-        sNombreCook = aCookies[i].substr(0,signoIgual);
-       // alert("array "+i+" "+sNombreCook+ " "+nombre);
+        sNombreCook = aCookies[i].substr(0, signoIgual);
+        // alert("array "+i+" "+sNombreCook+ " "+nombre);
         if (sNombreCook == nombre) {
             sValorCook = aCookies[i].substr(signoIgual + 1);
             //  alert("array "+sValorCook);
