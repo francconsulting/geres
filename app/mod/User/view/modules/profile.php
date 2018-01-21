@@ -392,12 +392,12 @@
                                 <label for="fAvatar" class="col-sm-2 control-label">Avatar</label>
                                 <div class="col-sm-10">
                                 <div class=" btn btn-success fileinput-button">
-                                    <i class="glyphicon glyphicon-plus"></i>
-                                    <span>Add files...</span>
+                                    <i class="glyphicon glyphicon-camera"></i>
+                                    <span>subir imagen...</span>
                                     <input type="file" class="form-control" id="fAvatar" name="fAvatar" onchange="previewFile()">
                                 </div>
 
-                                <input type="hiddenn" name="sAvatar" id="sAvatar">
+                                <input type="hidden" name="sAvatar" id="sAvatar">
                                 <span id="msgfile"  >Tamaño máximo 2Mb</span>
                                 </div>
                             </div>

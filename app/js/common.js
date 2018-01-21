@@ -8,7 +8,11 @@
 });
 */
 
-
+/**
+ * Cambia el titulo de la pagina de forma
+ * dinamica.
+ * @param titulo String con el texto a mostrar en el titulo
+ */
 function cambiarTitulo(titulo) {
     $("title")[0].innerHTML = titulo;
 }
@@ -26,8 +30,8 @@ function noSubmit(idForm) {
 
 /**
  * envio de formulario con js
- * @param formulario
- * @param url
+ * @param formulario   formulario que se va a enviar
+ * @param url           uri con la url donde se van a mandar los datos
  */
 function enviarForm(formulario, url) {
     $("#" + formulario).attr("action", url);
@@ -53,7 +57,28 @@ function getElementForm(formulario) {
 }
 
 /**
- *  Abrir la ventana modal
+ * Almacenar el valor del checkbox en un array
+ * @param element   checkbox seleccionado
+ * @param array     array que esta almacenando los valores
+ * @returns {*|Array}
+ */
+function checkboxToArray(element, array) {
+    var arrayTmp = array || [];
+//almacenar-actualizar los valores del rol en un array segun se marquen o desmarquen
+        if ($(element).is(':checked')) {
+            arrayTmp.push($(element).val());                   //si se marca arradir al array
+        } else {
+            var indice = arrayTmp.indexOf($(element).val());    //buscar el indice en el array del elemento desmarcado
+            arrayTmp.splice(indice, 1);                       //eliminar elemento
+        }
+        arrayTmp.sort()                                     //ordenar el array
+        return arrayTmp;                           //devolver los valores actualizados del array
+
+}
+
+/**
+ *  Abrir la ventana modal con
+ *  estilo boostrap
  */
 function ventanaModal() {
     $("#ventanaModal").modal({backdrop: "static"});
@@ -75,12 +100,16 @@ function ventanafinSesion() {
     });
 }
 
+/**
+ * Recoger el valor del elemento del menu que se ha seleccionado
+ * y recorgar la página iniciar la pagina con los valores recogidos
+ */
 var menu = function () {
     $(".sidebar-menu a").on('click', function (evt) {
-        console.log($(this).data().modulo.toUpperCase());
-        $("#hmod").val($(this).data().modulo);
-        evt.preventDefault();
-
+        //console.log($(this).data().modulo.toUpperCase());
+        $("#hmod").val($(this).data().modulo);  //asignacion del valor al input hmod oculto
+        evt.preventDefault();   //evitar la accion por defecto del evento
+        //envio del formulario a la pagina indicada
         enviarForm("frmCuerpo", "page.php"); //TODO -> descomentar
     })
 }

@@ -391,9 +391,8 @@ function getDatos(datos) {
             $(".modal-title").parent("div").addClass('bg-light-blue-active');  //añadir la clase de cabecera azul
             ventanaModal();     //abrir ventana modal
             //Cargar con Ajax el contenido HTML en la ventana modal
-            //return callAjax("./app/mod/User/view/modules/profile.php", function (result) {
             return callAjax(ruta + "/view/modules/profile.php", function (result) {
-                    //console.log(datos);
+
                     $("#contenidoModal").html(result);              //cargar el HTML en el div
                     noSubmit('profile');   //evitar el envio del formulario
 
@@ -426,10 +425,11 @@ function getDatos(datos) {
                         $("[name=aRolAux]").each(function (index) {
                             if ($("[name=aRolAux]")[index].value == element) {  //Comparar si el elemento marcado ya estaba marcado o no para tenerlo disponeble para el POST
                                 arrayRol.push($("[name=aRolAux]")[index].value);
+                               $("input[name=aRolAux]")[index].checked = true; //marcar el checbox
                             }
                         });
                     });
-
+                   // console.log(arrayRol);
                     //Establecer el check del genero a marcar en la carga del formulario según los datos de la tabla
                     if (genero == 'H') {
                         $("#cGeneroH").prop('checked', true);
@@ -458,15 +458,10 @@ function getDatos(datos) {
 
                     //almacenar-actualizar los valores del rol en un array segun se marquen o desmarquen
                     $("[name=aRolAux]:checkbox").on('change', function () {
-                        if ($(this).is(':checked')) {
-                            arrayRol.push($(this).val());                   //si se marca arradir al array
-                        } else {
-                            var indice = arrayRol.indexOf($(this).val());    //buscar el indice en el array del elemento desmarcado
-                            arrayRol.splice(indice, 1);                       //eliminar elemento
-                        }
-                        arrayRol.sort()                                     //ordenar el array
-                        $("#aRol").val(arrayRol);                           //almacenar los valores en un elemento del formulario
-                    });
+                        arrayRol = checkboxToArray($(this), arrayRol)
+                        $("#aRol").val(arrayRol)
+                    })
+
 
 
                     toggleAvatar();  //canbiar la imagen del avatar
