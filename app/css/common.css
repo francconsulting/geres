@@ -10,15 +10,18 @@ th, td{
     border:solid 1px red;
     padding:15px;
 }
-.bodyImg{
-    background-image: url('../../app/images/fondoapp.jpg');
-    width: auto;
+
+#imgFondo {
+    background-size: 100%;
+    background-repeat: no-repeat;
+    width: 100%;
     z-index: -1;
     height: auto;
     min-height: 100%;
     min-width: 100%;
     position: fixed;
 }
+
 .modal{
     background: rgba(0, 0, 0, 0.57);
     color: #000;

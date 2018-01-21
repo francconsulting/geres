@@ -35,7 +35,8 @@
 
 </head>
 <body class="hold-transition login-page">
-<div class="bodyImg" > </div>
+<img id="imgFondo"  src="app/images/fondoapp.jpg" alt="fondo"/>
+
 <div class="login-box">
     <div class="login-logo">
         <img src="./app/img/logogeres3.png" width="35%">
