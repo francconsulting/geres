@@ -25,3 +25,5 @@ gruntfile.js
 composer.json
 bower.json
 changelog.md
+/avatar/*.jpg
+/recursos/
