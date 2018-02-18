@@ -12,6 +12,7 @@ class Sesion
 
     use DbCommon;
 
+
     private static $conn;
     private static $tabla = "sesiones";
     private static $id = "idSesion";
@@ -40,16 +41,12 @@ class Sesion
          $this->nameUser = $nameUser;
         $this->dtUltimoAcceso = $dtIn;
         $this->sAvatar = $avatar;
-        $this->setConexion();
+        Sesion::setConexion();
     }
 
     private function setConexion()
     {
         self::$conn = $GLOBALS{CONN};
-        // self::$tabla = TABLA;
-        // self::$id = ID;
-        // self::$tabla = self::TABLA;
-        // self::$id = self::ID;
 
     }
 

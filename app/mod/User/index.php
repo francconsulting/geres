@@ -44,7 +44,7 @@ require_once(PATH . PROJECT . APP . "/mod/User/model/User_model.class.php");*/
 //TODO hasta aqui eliminar
 
 //vista principal a cargar
-include(MODULO . "/view/modules/" . $GLOBALS["clase"] . "lista.php");
+include(MODULO . "/view/list.php");
 
 //obtener el contenido de la pagina con el formulario popup
 $profile = file_get_contents(PATH.PROJECT.APP. DIRTEMPLATE. "/modal_tpl.php", FILE_USE_INCLUDE_PATH);

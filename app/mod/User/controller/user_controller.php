@@ -16,8 +16,6 @@ define("ID", "idUser"); //campo que vamos a usar como clave de la tabla
 
 class user_controller{
 
-
-
     public function __construct()
     {
         //TODO poner aqui los 2 require de la linea 20 y 21 o hacer un script que carge los archivos

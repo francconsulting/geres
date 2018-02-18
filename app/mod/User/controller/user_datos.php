@@ -37,11 +37,14 @@ if($sesion->getSignIn()) {  //si esta logado el usuario
     if (!isset($_POST['accion'])) { //cuando se realiza la carga de la pagina
         $rowsArray = $usuario->getUserAll(PDO::FETCH_ASSOC); //obtener todos los usuario de la tabla
         //usar el bucle para añadirle un elemento con la numeracion de orden al array de cada registro
-        $i = 1;
-        foreach ($rowsArray as $item) {
-            array_unshift($item, $item['num'] = $i);
-            $items[] = $item;
-            $i += 1;
+        $items =  [];
+        if (!empty($rowsArray)) {
+            $i = 1;
+            foreach ($rowsArray as $item) {
+                array_unshift($item, $item['num'] = $i);
+                $items[] = $item;
+                $i += 1;
+            }
         }
         $datos['exito'] = true;
         $datos['data'] = $items;

@@ -7,7 +7,6 @@
  */
 ob_start();
 
-
 define("PATH",$_SERVER['DOCUMENT_ROOT']);  //TODO raiz del proyecto
 define ("MODULO",str_replace("view", "", dirname(__FILE__)));
 

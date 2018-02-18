@@ -6,7 +6,8 @@
  * Date: 30/07/2017
  * Time: 14:11
  */
-
+//Control para evitar ejecutar el script directamente
+if(empty(defined("DIRMOD"))){ echo "No está permitida la ejecucion del script";}
 class User_model extends User
 
 {
@@ -14,11 +15,12 @@ class User_model extends User
     use DbCommon;
     use ClassCommon;
 
-    // Definicion de variables
+    // Definicion de variables genericas usada en el trait DbCommon
     private static $conn;
     private static $tabla;
     private static $id;
 
+    //Definicion de variables de la clase
     private $sEmail;
     private $sTelefono1;
     private $sTelefono2;
@@ -42,13 +44,7 @@ class User_model extends User
         $this->cGenero = $cGenero;
         $this->setConexion();
     }
-/* TODO Eliminar porque esta en DbCommon
-    private function setConexion(){
-        self::$conn =  $GLOBALS{CONN};
-        self::$tabla = TABLA;
-        self::$id = ID;
-    }
-*/
+
     /**
      * Obtener el email
      * @return mixed

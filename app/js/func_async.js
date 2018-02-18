@@ -15,7 +15,7 @@ function callAjax(url,doneFuncion,parametros,tipo,tipoDato) {
     parametros = parametros || "";  //si no hay parametros se pone por defecto una cadena vacia
     tipo = tipo || "POST";          //si no se indica el tipo se pone por defecto POST
     tipoDato = tipoDato || "json";  //si no se indica el tipo de datos por defecto se pone json
-    $.ajax({
+ return $.ajax({
         url: url,
         type: tipo,
         cache: false,

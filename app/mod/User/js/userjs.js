@@ -23,18 +23,20 @@ $(document).ready(function () {
 
     $("#btnGuardar").hide(); //ocultar el boton guardar que esta en la ventana modal
 
+    var param = {'existe' :0};
     //Actualizar la tabla de registro con el boton Actualizar Tabla
     $('#idRecarga').click(function () {
-        tabla.ajax.reload();
+         tabla.ajax.reload();
     });
 
     //Añadir nuevo usuario
     $("#addUser").click(function () {
-        $(".modal-title").parent("div").addClass('alert alert-success');  //añadir la clase
+
         callAjax('./app/mod/Sesion/controller/sesion_datos.php', function (results) {    //comprobar la sesion si esta activa
             if (!results.signIn) {
                 ventanafinSesion()
             } else {
+                $(".modal-title").parent("div").addClass('alert alert-success');  //añadir la clase
                 ventanaModal();
                 newProfile();
             }
@@ -267,7 +269,7 @@ function ver(datos) {
  * @param datos Objeto con las propiedades a actualizar
  */
 function actualizar(datos) {
-
+console.log(datos)
     var bUpdate = false,
         nuevosDatos = getElementForm('#profile input'), //capura de todos los elementos del formulario
         param = new Object();
@@ -317,7 +319,7 @@ function newProfile() {
     $(".modal-title").parent("div").addClass('bg-light-green-active');  //añadir la clase de cabecera azul
     $(".modal-title").html("Añadir nuevo usuario");
     //Cargar pagina en ventana con Ajax
-    return callAjax(ruta + "/view/modules/profile.php", function (result) {
+    return callAjax(ruta + "/view/profile.php", function (result) {
         noSubmit('profile');                //evita el envio de formulario
 
         $("#contenidoModal").html(result);  //carga el html en el ventan modal
@@ -391,7 +393,7 @@ function getDatos(datos) {
             $(".modal-title").parent("div").addClass('bg-light-blue-active');  //añadir la clase de cabecera azul
             ventanaModal();     //abrir ventana modal
             //Cargar con Ajax el contenido HTML en la ventana modal
-            return callAjax(ruta + "/view/modules/profile.php", function (result) {
+            return callAjax(ruta + "/view/profile.php", function (result) {
 
                     $("#contenidoModal").html(result);              //cargar el HTML en el div
                     noSubmit('profile');   //evitar el envio del formulario

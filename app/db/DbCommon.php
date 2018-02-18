@@ -13,13 +13,15 @@ trait DbCommon
      * bade de datos.
      * Parametros $tabla y $id establecidos en el
      * controlador de la clase.
-     * El parametro $conn definido en db.openconex.inc.php
+     *
+     * $conn esta definido en db.openconex.inc.php
      */
      private function setConexion(){
           self::$conn =  $GLOBALS{CONN};
           self::$tabla = TABLA;
           self::$id = ID;
       }
+
 
       /**
        * Obtener el id del usuario que
