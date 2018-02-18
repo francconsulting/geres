@@ -38,6 +38,7 @@ function callAjax(url,doneFuncion,parametros,tipo,tipoDato) {
         })
         .fail(function(jqXHR){  //en caso de que la peticion sea erronea
             alert('ERROR en AJAX: '+jqXHR.status );
+            console.log(jqXHR);
             $("#mensaje").addClass("error").text("Se ha producido un error:" + jqXHR.status+ " "+jqXHR.statusText); //si hay algun error en la llamada muestra un mensaje
         })
 

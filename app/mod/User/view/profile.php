@@ -300,7 +300,7 @@
                                 <label for="sNombre" class="col-sm-2 control-label">Nombre</label>
 
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control " id="sNombre" name="sNombre"  placeholder="Nombre">
+                                    <input type="text" class="form-control " id="sNombre" name="sNombre"  placeholder="Nombre" value="xxx">
 
                                 </div>
                             </div>
@@ -308,7 +308,7 @@
                                 <label for="sApellidos" class="col-sm-2 control-label">Apellidos</label>
 
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="sApellidos" name="sApellidos"  placeholder="Apellidos">
+                                    <input type="text" class="form-control" id="sApellidos" name="sApellidos"  placeholder="Apellidos" value="xxx">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -338,28 +338,28 @@
                                 <label for="sEmail" class="col-sm-2 control-label">Email</label>
 
                                 <div class="col-sm-10">
-                                    <input type="email" class="form-control" id="sEmail" name="sEmail" placeholder="email">
+                                    <input type="email" class="form-control" id="sEmail" name="sEmail" placeholder="email" value="xxx@xxx.es">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="sTelefono1" class="col-sm-2 control-label">Teléfono 1</label>
 
                                 <div class="col-sm-10">
-                                    <input type="tel" class="form-control" id="sTelefono1" name="sTelefono1" placeholder="Teléfono">
+                                    <input type="tel" class="form-control" id="sTelefono1" name="sTelefono1" placeholder="Teléfono" value="666666666">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="sTelefono2" class="col-sm-2 control-label">Teléfono 2</label>
 
                                 <div class="col-sm-10">
-                                    <input type="tel" class="form-control" id="sTelefono2" name="sTelefono2" placeholder="Teléfono">
+                                    <input type="tel" class="form-control" id="sTelefono2" name="sTelefono2" placeholder="Teléfono" value="666666666">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="sDireccion" class="col-sm-2 control-label">Dirección</label>
 
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="sDireccion" name="sDireccion" placeholder="Direccion">
+                                    <input type="text" class="form-control" id="sDireccion" name="sDireccion" placeholder="Direccion" value="direc">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -374,7 +374,7 @@
                                 <div class="col-sm-10">
                                     <input type="hidden" class="form-control" id="aRol">
                                     <label class="radio-inline">
-                                        <input type="checkbox" name="aRolAux" value="Adm">
+                                        <input type="checkbox" name="aRolAux" value="Adm" checked>
                                         Administrador
                                     </label>
                                     <label class="radio-inline">
@@ -397,7 +397,7 @@
                                     <input type="file" class="form-control" id="fAvatar" name="fAvatar" onchange="previewFile()">
                                 </div>
 
-                                <input type="hidden" name="sAvatar" id="sAvatar">
+                                <input type="hiddenn" name="sAvatar" id="sAvatar">
                                 <span id="msgfile"  >Tamaño máximo 2Mb</span>
                                 </div>
                             </div>

@@ -72,7 +72,8 @@ if($sesion->getSignIn()) {  //si esta logado el usuario
                     $datos['exito'] = true;
                 }
             }
-            //   var_dump($datos);
+
+              // var_dump($datos);
         }
 
         //accion para cargar la imagen del avatar

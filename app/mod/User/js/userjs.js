@@ -270,6 +270,9 @@ function ver(datos) {
  */
 function actualizar(datos) {
 console.log(datos)
+    if(datos==undefined) {
+        datos = [];
+    }
     var bUpdate = false,
         nuevosDatos = getElementForm('#profile input'), //capura de todos los elementos del formulario
         param = new Object();
@@ -277,15 +280,17 @@ console.log(datos)
 
     for (var item  in nuevosDatos) {    //recorrer todos los elemento del formulario
         //  alert(item+ "  "+nuevosDatos[item]+"   -> "+data[item]);
-        if (datos[item] == undefined) { //establecer a vacio los elementos que viajan indefinido
-            datos[item] = ''
-        }
-        if (nuevosDatos[item] != datos[item]) { //si hay cambios con los datos anteriores se actualizara el registro
-            bUpdate = true;
-        }
+
+            if (datos[item] == undefined) { //establecer a vacio los elementos que viajan indefinido
+                datos[item] = ''
+            }
+            if (nuevosDatos[item] != datos[item]) { //si hay cambios con los datos anteriores se actualizara el registro
+                bUpdate = true;
+            }
         param[item] = nuevosDatos[item];        //guardar los valores en un Objeto
 
     }
+
     console.log(param);
     if (bUpdate) {      //si hay cambios
         param['accion'] = 'update';
