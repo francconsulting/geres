@@ -226,6 +226,7 @@ trait DbCommon
         }
 
         //si se ha pasado un id, hay que hacer un insert
+
         if (!$this->{self::$id}) {
             if ($incluirCamposLog) {
                 $parametros = $this->propiedades_log_action($parametros, "insert");

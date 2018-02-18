@@ -35,7 +35,7 @@ class User_model extends User
         $sDireccion = null, $sCodigoPostal = null, $cGenero = null, $sAvatar = null, $idUser=null)
     {
         //llamada al constructor padre
-        parent::__construct($sNombre, $Apellidos , $sPassword, $aRol, $cGenero, $sAvatar, $idUser);
+        parent::__construct($sNombre, $Apellidos , $sPassword, $aRol,  $sAvatar, $idUser);
         $this->sEmail = $sEmail;
         $this->sTelefono1 = $sTelefono1;
         $this->sTelefono2 = $sTelefono2;

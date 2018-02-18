@@ -236,6 +236,7 @@ class Db
                     $iCon++;
                 }
             }
+
             if ($rst = $rst->execute()) {
                 // $msg = "Se han insertado " . $rst->rowCount() . " registros";
                 // $rst = null; //liberar recursos

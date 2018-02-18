@@ -76,6 +76,7 @@ function checkboxToArray(element, array) {
 
 }
 
+
 /**
  *  Abrir la ventana modal con
  *  estilo boostrap
@@ -134,4 +135,15 @@ function getCookie(nombre) {
 
     }
     return sValorCook;
+}
+
+/**
+ * Mostrar el spiner de actualizacion de datos
+ */
+function mostrarSpinner(){
+    $("#loaderImage").html("<img id='spinner'> <span>Actualizando datos....</span>")
+    $('#spinner').attr('src', "./app/images/spinner/ajax-loader.gif" )
+    $('#spinner').css({'position':'absolute','z-index': '9999', 'margin-top':'30%', 'margin-left':'40%'})
+    $("#loaderImage span").css({'position':'absolute','z-index': '9999', 'margin-top':'30%', 'margin-left':'45%', 'line-height': '30px', 'font-weight': 'bold','color': '#1041CA'})
+    $("#loaderImage").clearQueue().fadeIn();     //mostramos el mensaje con efecto y eliminando de la cola los elementos no procesados aun
 }

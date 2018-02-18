@@ -12,7 +12,7 @@
 <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
 <link rel="stylesheet" href="/geres/app/js/jQuery-File-Upload/css/jquery.fileupload.css">
 <section class="content">
-
+    <div id="loaderImage" style="display:none"></div>
     <div class="row">
         <div class="col-md-3">
 
@@ -372,9 +372,9 @@
                             <div class="form-group">
                                 <label for="aRol" class="col-sm-2 control-label">Rol</label>
                                 <div class="col-sm-10">
-                                    <input type="hidden" class="form-control" id="aRol">
+                                    <input type="hidden" class="form-control" name="aRol" id="aRol">
                                     <label class="radio-inline">
-                                        <input type="checkbox" name="aRolAux" value="Adm" checked>
+                                        <input type="checkbox" name="aRolAux" value="Adm" >
                                         Administrador
                                     </label>
                                     <label class="radio-inline">
@@ -394,10 +394,10 @@
                                 <div class=" btn btn-success fileinput-button">
                                     <i class="glyphicon glyphicon-camera"></i>
                                     <span>subir imagen...</span>
-                                    <input type="file" class="form-control" id="fAvatar" name="fAvatar" onchange="previewFile()">
+                                    <input type="file" class="form-control" id="fAvatar" name="fAvatar" >
                                 </div>
 
-                                <input type="hiddenn" name="sAvatar" id="sAvatar">
+                                <input type="hidden" name="sAvatar" id="sAvatar">
                                 <span id="msgfile"  >Tamaño máximo 2Mb</span>
                                 </div>
                             </div>
@@ -441,3 +441,4 @@
 
 </section>
 <!-- /.content -->
+

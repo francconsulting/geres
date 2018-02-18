@@ -269,7 +269,6 @@ function ver(datos) {
  * @param datos Objeto con las propiedades a actualizar
  */
 function actualizar(datos) {
-console.log(datos)
     if(datos==undefined) {
         datos = [];
     }
@@ -279,7 +278,7 @@ console.log(datos)
     //  console.log(nuevosDatos);     console.log(datos);
 
     for (var item  in nuevosDatos) {    //recorrer todos los elemento del formulario
-        //  alert(item+ "  "+nuevosDatos[item]+"   -> "+data[item]);
+          //console.log(item+ "  "+nuevosDatos[item]+"   -> "+datos[item]);
 
             if (datos[item] == undefined) { //establecer a vacio los elementos que viajan indefinido
                 datos[item] = ''
@@ -291,7 +290,7 @@ console.log(datos)
 
     }
 
-    console.log(param);
+    //console.log(param);
     if (bUpdate) {      //si hay cambios
         param['accion'] = 'update';
         callAjax("./app/mod/User/controller/user_datos.php", function (result) {
@@ -323,25 +322,37 @@ console.log(datos)
 function newProfile() {
     $(".modal-title").parent("div").addClass('bg-light-green-active');  //añadir la clase de cabecera azul
     $(".modal-title").html("Añadir nuevo usuario");
-    //Cargar pagina en ventana con Ajax
     return callAjax(ruta + "/view/profile.php", function (result) {
-        noSubmit('profile');                //evita el envio de formulario
 
-        $("#contenidoModal").html(result);  //carga el html en el ventan modal
+            $("#contenidoModal").html(result);              //cargar el HTML en el div
+            noSubmit('profile');   //evitar el envio del formulario
 
-        $("#sNombre").keyup(function () {
-            $("#NombrePerfil").html($("#sNombre").val());
-        });
-        $("#sApellidos").keyup(function () {
-            $("#ApellidosPerfil").html($("#sApellidos").val());
-        });
+            $("#sNombre").keyup(function () {
+                $("#NombrePerfil").html($("#sNombre").val());
+            });
+            $("#sApellidos").keyup(function () {
+                $("#ApellidosPerfil").html($("#sApellidos").val());
+            });
 
-        avatarDefault();        //poner el avatar por defecto
-        toggleAvatar();         //cambiar el avatar por defecto segun sexo marcado
-        bvValidarForm();        //validar formulario con boostrapValidation
+            var arrayRol = [];
+            //almacenar-actualizar los valores del rol en un array segun se marquen o desmarquen
+            $("[name=aRolAux]:checkbox").on('change', function () {
+                arrayRol = checkboxToArray($(this), arrayRol);
+                $("#aRol").val(arrayRol)
+            })
 
-    }, null, 'POST', 'HTML');
+            avatarDefault();        //poner el avatar por defecto
+            toggleAvatar();  //canbiar la imagen del avatar
+            bvValidarForm();  //comprobaciones de validacion del formulario
+
+            $(document).on('change', '#fAvatar', previewFile)  //previsualizar el avatar cuando se cambie
+
+        }, null,
+        "POST",
+        "HTML");
+
 }
+
 
 /**
  * Añadir la imagen por defecto del avatar
@@ -353,6 +364,7 @@ function avatarDefault() {
     $("#avatar").attr("src", "./app/images/avatar/" + avatar);
     $("#avatar").width(100);
     $("#avatar").height(100);
+    $("#sAvatar").val(avatar)
 }
 
 /**
@@ -561,17 +573,31 @@ function bvValidarForm(datos) {
                 validators: {
                     notEmpty: bvElige
                 }
+            },
+            aRolAux: {
+                validators: {
+                    notEmpty: bvElige
+                }
             }
 
         }
     })
+        .on('status.field.bv', function(e, data){
+            $(".control-label").css('color','#000');
+        })
         .on('error.form.bv', function (e) {
             console.log(e);
+            $("#btnActualizar").attr('disabled', false)
         })
         .on('success.form.bv', function (e) {  //actualizacion de datos y estados de campos del formularios con el envio correcto
-            $("#cGenero").val($("input[name='cGeneroAux']:checked").val());
+            e.preventDefault();
+            $("#cGenero").val( $("input[name='cGeneroAux']:checked").val() );
             $("#fAvatar").hide();
             $("#fAvatar").closest('.fileinput-button').attr('disabled', true);
+
+            $("#btnActualizar").attr('disabled', 'disabled')
+            mostrarSpinner();
+
             actualizar(datos);
         })
         .on('success.field.bv', function (e, data) {     //acciones cuando success, por campo
@@ -581,17 +607,22 @@ function bvValidarForm(datos) {
                     .closest('.form-group') //obtener el campo padre
                     .removeClass('has-success')  //quitar la clase
                     .find('[data-bv-icon-for="sCodigoPostal"]').hide()  //buscar el campo con icono para el campo indicado
-
                 //data.element.parents('.form-group').find('.form-control-feedback[data-bv-icon-for=sCP]').hide();
-
             }
             if (data.field == 'cGeneroAux') {     //acciones para el campo Sexo
                 moverIconoBv('cGeneroAux');
             }
+            if (data.field == 'aRolAux') {     //acciones para el campo Rol
+                moverIconoBv('aRolAux');
+            }
+
         })
         .on('error.field.bv', function (e, data) {     //acciones cuando existe error, por campo
             if (data.field == 'cGeneroAux') {     //acciones para el campo Sexo
                 moverIconoBv('cGeneroAux');
+            }
+            if (data.field == 'aRolAux') {     //acciones para el campo Rol
+                moverIconoBv('aRolAux');
             }
         })
         .on('error.validator.bv', function (e, data) { //SOLO UN MENSAJE POR ERROR
@@ -802,3 +833,4 @@ function limpiarForm() {
     $("#idUser").val("");
     $("#containerUser").hide();
 }
+

@@ -62,7 +62,7 @@ if($sesion->getSignIn()) {  //si esta logado el usuario
             if ($_POST['idUser'] == '') {
                 if(!empty($usuario->guardarUser($_POST['sNombre'], $_POST['sApellidos'], crypt($_POST['sPassword'], Util::getSalt()),
                     $_POST['aRol'], $_POST['sEmail'], $_POST['sTelefono1'], $_POST['sTelefono2'], $_POST['sDireccion'],
-                    $_POST['sCodigoPostal'], $_POST['cGenero']))) {
+                    $_POST['sCodigoPostal'], $_POST['cGenero'], $_POST['sAvatar']))) {
                     $datos['exito'] = true;
                 }
             }
@@ -73,7 +73,7 @@ if($sesion->getSignIn()) {  //si esta logado el usuario
                 }
             }
 
-              // var_dump($datos);
+              // var_dump($_POST);
         }
 
         //accion para cargar la imagen del avatar
