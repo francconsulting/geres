@@ -15,8 +15,8 @@ $(document).ready(function () {
      */
     $("#btnCerrar, button.close").on("click", function () {
         $(".modal-title").parent("div").removeClass('alert alert-error');   //eliminar la clase alert
-        $(".modal-title").parent("div").removeClass('bg-light-blue-active');  //añadir la clase de cabecera azul
-        $(".modal-title").parent("div").removeClass('alert alert-success');  //añadir la clase
+        $(".modal-title").parent("div").removeClass('bg-light-blue-active');  //eliminar la clase de cabecera azul
+        $(".modal-title").parent("div").removeClass('alert alert-success');  //eliminar la clase
         $("#btnEliminar").remove();         //quitar el boton eliminar
     });
 
@@ -166,7 +166,8 @@ function Table() {
             callAjax("./app/mod/Sesion/controller/sesion_datos.php", function (result) {    //comprobar sui esta activa la sesion
                 //  console.log("precallback: "+!result.signIn);
                 if (!result.signIn) {  //control de sesion, si no esta activa la sesion se envia al indice
-                    $(location).attr('href', 'index.php');
+                    ventanafinSesion()
+                  //  $(location).attr('href', 'index.php');
                 }
             });
         },
